@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TestLibrary
 {
     [Serializable]
-    public class Exam
+    public class Test
     {
         public List<Question> Questions { get; set; }
        

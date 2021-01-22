@@ -15,13 +15,15 @@ using System.Windows.Shapes;
 namespace TestDesigner
 {
     /// <summary>
-    /// Interaction logic for TestRedactor.xaml
+    /// Interaction logic for CreateTestWindow.xaml
     /// </summary>
-    public partial class TestRedactor : Window
+    public partial class CreateTestWindow : Window
     {
-        public TestRedactor()
+        public CreateTestWindow()
         {
             InitializeComponent();
         }
+
+       
     }
 }

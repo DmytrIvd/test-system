@@ -24,7 +24,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Width="332" Height="42" Margin="10,28,0,0" Click="Button_Click" >
+        <Button  HorizontalAlignment="Left" VerticalAlignment="Top" Width="332" Height="42" Margin="10,28,0,0" Click="NewTest_Click" >
             <StackPanel>
                 <Image />
                 <TextBlock Text="Create new"/>

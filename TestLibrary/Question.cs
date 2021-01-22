@@ -17,5 +17,6 @@ namespace TestLibrary
         [XmlElement("Text")]
         public string Question_str { get; set; }
         public List<Variant> Variants { get; set; }
+        public int Dificulty{ get; set; }
     }
 }

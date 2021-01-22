@@ -25,9 +25,19 @@ namespace TestDesigner
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void NewTest_Click(object sender, RoutedEventArgs e)
         {
+            this.Hide();
+            TestDesignerViewModel testDesigner = new TestDesignerViewModel();
+            CreateTestWindow createTestWindow = new CreateTestWindow();
+            createTestWindow.DataContext = testDesigner;
+            createTestWindow.Show();
+            createTestWindow.Closing += CreateTestWindow_Closing;
+        }
 
+        private void CreateTestWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Show();
         }
     }
 }
