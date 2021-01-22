@@ -24,6 +24,17 @@ namespace TestDesigner
             InitializeComponent();
         }
 
-       
+        private void ListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key== Key.Escape){
+                listBox1.UnselectAll();
+            }
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
