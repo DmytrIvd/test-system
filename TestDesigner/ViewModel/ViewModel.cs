@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -9,26 +11,45 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Xml.Serialization;
 using TestLibrary;
 
 namespace TestDesigner
 {
     class TestDesignerViewModel : INotifyPropertyChanged
     {
-  
+
         public TestDesignerViewModel()
         {
-            //Test = new Test();
-            // Test.Questions 
+            InitValues();
+        }
+        public TestDesignerViewModel(Test test, string path)
+        {
+
+            InitValues();
+            this.test = test;
+            this.path = path;
+            foreach (var q in test.Questions)
+                Questions.Add(q);
+        }
+        private Test test { get; set; }
+        private string path { get; set; }
+        private void InitValues()
+        {
+
             Questions = new ObservableCollection<Question>();
-          
+
             Variants = new ObservableCollection<Variant>();
             LevelsOfDificulty = new ObservableCollection<int>(){
-            1,2,3,4,5
+                1,2,3,4,5
             };
+            sfd = new SaveFileDialog();
+            sfd.Filter = "XML Files (*.xml)|*.xml";
+            sfd.FilterIndex = 0;
+            sfd.DefaultExt = "xml";
         }
-      
-       
+        #region Properties methods
+
         private void SavePreviousProperties()
         {
             if (IsPropertiesNotEmpty())
@@ -43,7 +64,7 @@ namespace TestDesigner
 
 
                 OnPropertyChanged("Value");
-                
+
             }
 
         }
@@ -56,12 +77,12 @@ namespace TestDesigner
             {
                 foreach (var v in value.Variants)
                 {
-               
+
                     Variants.Add(v);
                 }
                 Dificulty = value.Dificulty;
                 QStr = value.Question_str;
-               
+
             }
 
         }
@@ -69,13 +90,16 @@ namespace TestDesigner
         {
             Variants.Clear();
             Dificulty = 1;
-            QStr = null;  
+            QStr = null;
         }
         private bool IsPropertiesNotEmpty()
         {
             return !string.IsNullOrWhiteSpace(QStr) && Variants.Count >= 2 && Variants.IsVariantsHaveOneRight();
         }
+        #endregion
         #region Properties
+        public ObservableCollection<int> LevelsOfDificulty { get; set; }
+
         public ObservableCollection<Question> Questions { get; set; }
 
         private Question currentQuestion;
@@ -85,7 +109,7 @@ namespace TestDesigner
             get => currentQuestion;
             set
             {
-                if (currentQuestion != null&&!currentQuestion.Equals(value))
+                if (currentQuestion != null)
                     SavePreviousProperties();
 
                 currentQuestion = value;
@@ -94,7 +118,8 @@ namespace TestDesigner
                 OnPropertyChanged("CurrentQuestion");
             }
         }
-        public ObservableCollection<int> LevelsOfDificulty { get; set; }
+
+        public SaveFileDialog sfd { get; private set; }
         #region QuestionsProperties
         public ObservableCollection<Variant> Variants { get; set; }
 
@@ -106,7 +131,7 @@ namespace TestDesigner
         #endregion
 
 
-        
+
         #endregion
         #region Commands
 
@@ -133,11 +158,13 @@ namespace TestDesigner
             {
                 if (deleteQuestion == null)
                 {
-                    deleteQuestion = new RelayCommand(ExecDeleteQuestion);
+                    deleteQuestion = new RelayCommand(ExecDeleteQuestion, CanDeleteQuestion);
                 }
                 return deleteQuestion;
             }
         }
+
+
 
         private ICommand addNewAnswer;
         public ICommand AddNewAnswer
@@ -152,19 +179,36 @@ namespace TestDesigner
             }
         }
 
-        private ICommand saveQuestion;
-        public ICommand SaveQuestion
+        private ICommand addQuestion;
+        public ICommand AddQuestion
         {
             get
             {
-                if (saveQuestion == null)
+                if (addQuestion == null)
                 {
-                    saveQuestion = new RelayCommand(SaveQuestionExec, CanSaveQuestion);
+                    addQuestion = new RelayCommand(AddQuestionExec, CanAddQuestion);
                 }
-                return saveQuestion;
+                return addQuestion;
 
             }
         }
+
+
+        private ICommand saveCommand;
+        public ICommand Save
+        {
+
+            get
+            {
+                if (saveCommand == null)
+                {
+                    saveCommand = new RelayCommand(SaveTestExec);
+                }
+                return saveCommand;
+            }
+        }
+
+
 
         //private ICommand showQuestion;
 
@@ -189,8 +233,8 @@ namespace TestDesigner
 
         #endregion
 
-        #region CommandHandlers
-
+        #region Command handlers
+        #region Delete answer
         private bool CanDeleteAnswer(object arg)
         {
 
@@ -203,8 +247,9 @@ namespace TestDesigner
             Variants.Remove(variant);
 
         }
-
-        private void SaveQuestionExec(object obj)
+        #endregion
+        #region Add question
+        private void AddQuestionExec(object obj)
         {
             var newQuestion = new Question()
             {
@@ -215,12 +260,12 @@ namespace TestDesigner
             Questions.Add(newQuestion);
             ClearProperties();
         }
-
-        private bool CanSaveQuestion(object arg)
+        private bool CanAddQuestion(object arg)
         {
             return CurrentQuestion == null && IsPropertiesNotEmpty();
         }
-
+        #endregion
+        #region Add answer
         private bool CanAddNewAnswer(object arg)
         {
             return Variants.Count < 9;
@@ -229,15 +274,70 @@ namespace TestDesigner
         {
             Variants.Add(new Variant() { IsRight = false, Variant_str = "<empty>" });
         }
-
-       
-
+        #endregion
+        #region Delete question
+        private bool CanDeleteQuestion(object arg)
+        {
+            return Questions.Count > 5;
+        }
         private void ExecDeleteQuestion(object obj)
         {
             var q = obj as Question;
             Questions.Remove(q);
         }
+        #endregion
+        #region Save test to file
+        private bool ShowFileDialog()
+        {
+            if (sfd.ShowDialog() == true)
+            {
 
+                if (!String.Equals(Path.GetExtension(sfd.FileName),
+                       ".xml",
+                       StringComparison.OrdinalIgnoreCase))
+                {
+                    // Invalid file type selected; display an error.
+                    MessageBox.Show("The type of the selected file is not supported by this application. You must select an XML file.",
+                                    "Invalid File Type"
+                                   );
+                    return ShowFileDialog();
+                }
+                return true;
+            }
+            return false;
+        }
+        private void SaveTestExec(object obj)
+        {
+            FileMode fileMode=FileMode.Truncate;
+            test = new Test()
+            {
+                Questions = new List<Question>(this.Questions)
+            };
+            if (string.IsNullOrWhiteSpace(path))
+            {
+
+                if (ShowFileDialog())
+                {
+                    path = sfd.FileName;
+                  
+                    
+                    if(!File.Exists(path)){
+                        fileMode = FileMode.CreateNew;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+
+            }
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Test));
+            using (var fs = File.Open(path, fileMode))
+            {
+                xmlSerializer.Serialize(fs, test);
+            }
+        }
+        #endregion
         #endregion
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

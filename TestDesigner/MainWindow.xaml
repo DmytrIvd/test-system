@@ -31,7 +31,7 @@
 
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="332" Height="42">
+        <Button HorizontalAlignment="Left" Margin="10,118,0,0" VerticalAlignment="Top" Width="332" Height="42" Click="EditTest_Click">
             <StackPanel>
                 <Image/>
                 <TextBlock Text="Open"/>

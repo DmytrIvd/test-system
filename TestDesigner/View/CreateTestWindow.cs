@@ -50,5 +50,23 @@ namespace TestDesigner
             listBox1.UnselectAll();
             textBox1.Focus();
         }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+           var result= MessageBox.Show("Save changes?", "Warning", MessageBoxButton.YesNoCancel);
+           switch(result){
+                case MessageBoxResult.Yes:{
+                        (DataContext as TestDesignerViewModel).Save.Execute(null);
+                        break;
+                }
+                case MessageBoxResult.No:{
+                        break;
+                }
+                case MessageBoxResult.Cancel:{
+                        e.Cancel = true;
+                        break;
+                }
+           }
+        }
     }
 }
