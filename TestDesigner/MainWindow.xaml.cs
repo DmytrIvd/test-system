@@ -90,7 +90,8 @@ namespace TestDesigner
 
             IsEditing = true;
             Test test = ShowFileDialog();
-            if (test != null)                ShowTestDesigner(test);
+            if (test != null)               
+                ShowTestDesigner(test);
 
         }
     }
