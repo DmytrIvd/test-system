@@ -35,5 +35,10 @@ namespace TestLibrary
             hashCode = hashCode * -1521134295 + Dificulty.GetHashCode();
             return hashCode;
         }
+
+        public override string ToString()
+        {
+            return "Name:"+Question_str+"|Dificulty:"+Dificulty+"|Count of variants:"+Variants.Count;
+        }
     }
 }

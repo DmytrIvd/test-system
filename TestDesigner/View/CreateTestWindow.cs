@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,11 +20,18 @@ namespace TestDesigner
     /// </summary>
     public partial class CreateTestWindow : Window
     {
+
         public CreateTestWindow()
         {
             InitializeComponent();
         }
+        public void OnPropertyValueChanged_Refresh(object sender, PropertyChangedEventArgs e)
+        {
+           if(e.PropertyName=="Value"){
+                this.listBox1.Items.Refresh();
 
+            }
+        }
         private void ListBox_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key== Key.Escape){
@@ -35,6 +43,12 @@ namespace TestDesigner
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            listBox1.UnselectAll();
+            textBox1.Focus();
         }
     }
 }

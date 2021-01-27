@@ -32,6 +32,7 @@ namespace TestDesigner
             CreateTestWindow createTestWindow = new CreateTestWindow();
             createTestWindow.DataContext = testDesigner;
             createTestWindow.Show();
+           // testDesigner.PropertyChanged += createTestWindow.OnPropertyValueChanged_Refresh;
             createTestWindow.Closing += CreateTestWindow_Closing;
         }
 

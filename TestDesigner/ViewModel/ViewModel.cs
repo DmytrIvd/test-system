@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices; 
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using TestLibrary;
 
@@ -14,46 +15,67 @@ namespace TestDesigner
 {
     class TestDesignerViewModel : INotifyPropertyChanged
     {
+  
         public TestDesignerViewModel()
         {
             //Test = new Test();
             // Test.Questions 
-            Questions = new ObservableCollection<Question>(){
-            new Question()
-            {
-                Dificulty = 2,
-                Question_str = "123",
-                Variants = new List<Variant>(){
-                new Variant(){
-                IsRight=true,
-                Variant_str="123"
-                },
-                new Variant(){
-                IsRight=false,
-                Variant_str="123"
-                },
-                }
-            },
-              new Question()
-              {
-                  Dificulty = 3,
-                  Question_str = "222",
-                  Variants = new List<Variant>(){
-                new Variant(){
-                IsRight=true,
-                Variant_str="222"
-                },
-                new Variant(){
-                IsRight=false,
-                Variant_str="222"
-                },
-                }
-              } };
+            Questions = new ObservableCollection<Question>();
+          
             Variants = new ObservableCollection<Variant>();
             LevelsOfDificulty = new ObservableCollection<int>(){
             1,2,3,4,5
             };
         }
+      
+       
+        private void SavePreviousProperties()
+        {
+            if (IsPropertiesNotEmpty())
+            {
+                //Variants property
+                CurrentQuestion.Variants.Clear();
+                CurrentQuestion.Variants.AddRange(Variants.Where(x => !string.IsNullOrWhiteSpace(x.Variant_str)));
+                //Dificulty property
+                CurrentQuestion.Dificulty = Dificulty;
+                //Name property
+                CurrentQuestion.Question_str = QStr;
+
+
+                OnPropertyChanged("Value");
+                
+            }
+
+        }
+        private void ChangeProperties(Question value)
+        {
+
+
+            ClearProperties();
+            if (value != null)
+            {
+                foreach (var v in value.Variants)
+                {
+               
+                    Variants.Add(v);
+                }
+                Dificulty = value.Dificulty;
+                QStr = value.Question_str;
+               
+            }
+
+        }
+        private void ClearProperties()
+        {
+            Variants.Clear();
+            Dificulty = 1;
+            QStr = null;  
+        }
+        private bool IsPropertiesNotEmpty()
+        {
+            return !string.IsNullOrWhiteSpace(QStr) && Variants.Count >= 2 && Variants.IsVariantsHaveOneRight();
+        }
+        #region Properties
         public ObservableCollection<Question> Questions { get; set; }
 
         private Question currentQuestion;
@@ -63,34 +85,29 @@ namespace TestDesigner
             get => currentQuestion;
             set
             {
-                if (currentQuestion != null)
-                    SavePreviousVariants();
+                if (currentQuestion != null&&!currentQuestion.Equals(value))
+                    SavePreviousProperties();
+
                 currentQuestion = value;
-                ChangeVariants(value);
+                ChangeProperties(value);
+
                 OnPropertyChanged("CurrentQuestion");
             }
         }
-        private void SavePreviousVariants()
-        {
-            CurrentQuestion.Variants.Clear();
-            CurrentQuestion.Variants.AddRange(Variants);
-        }
-        private void ChangeVariants(Question value)
-        {
-
-            //Adds new
-            Variants.Clear();
-            if (value != null)
-            {
-                foreach (var v in value.Variants)
-                {
-                    Variants.Add(v);
-                }
-            }
-        }
-
-        public ObservableCollection<Variant> Variants { get; set; }
         public ObservableCollection<int> LevelsOfDificulty { get; set; }
+        #region QuestionsProperties
+        public ObservableCollection<Variant> Variants { get; set; }
+
+        private int dificulty;
+        public int Dificulty { get => dificulty; set { dificulty = value; OnPropertyChanged("Dificulty"); } }
+
+        private string qStr;
+        public string QStr { get => qStr; set { qStr = value; OnPropertyChanged("QStr"); } }
+        #endregion
+
+
+        
+        #endregion
         #region Commands
 
 
@@ -106,19 +123,6 @@ namespace TestDesigner
                 }
                 return deleteAnswer;
 
-            }
-        }
-
-        private ICommand addQuestion;
-        public ICommand AddQuestion
-        {
-            get
-            {
-                if (addQuestion == null)
-                {
-                    addQuestion = new RelayCommand(ExecAddQuestion, CanAddQuestion);
-                }
-                return addQuestion;
             }
         }
 
@@ -161,24 +165,27 @@ namespace TestDesigner
 
             }
         }
-       
-        private ICommand showQuestion;
-        public ICommand ShowQuestion
-        {
-            get
-            {
-                if (showQuestion == null)
-                {
-                    showQuestion = new RelayCommand(ExecShowQuestion);
-                }
-                return showQuestion;
-            }
-        }
 
-        private void ExecShowQuestion(object obj)
-        {
-            MessageBox.Show(CurrentQuestion.Dificulty + " " + CurrentQuestion.Question_str);
-        }
+        //private ICommand showQuestion;
+
+
+        //public ICommand ShowQuestion
+        //{
+        //    get
+        //    {
+        //        if (showQuestion == null)
+        //        {
+        //            showQuestion = new RelayCommand(ExecShowQuestion);
+        //        }
+        //        return showQuestion;
+        //    }
+        //}
+
+
+        //private void ExecShowQuestion(object obj)
+        //{
+        //    MessageBox.Show(CurrentQuestion.Dificulty + " " + CurrentQuestion.Question_str);
+        //}
 
         #endregion
 
@@ -199,11 +206,19 @@ namespace TestDesigner
 
         private void SaveQuestionExec(object obj)
         {
-            throw new NotImplementedException();
+            var newQuestion = new Question()
+            {
+                Question_str = QStr,
+                Variants = this.Variants.ToList(),
+                Dificulty = this.Dificulty
+            };
+            Questions.Add(newQuestion);
+            ClearProperties();
         }
+
         private bool CanSaveQuestion(object arg)
         {
-            return CurrentQuestion == null;
+            return CurrentQuestion == null && IsPropertiesNotEmpty();
         }
 
         private bool CanAddNewAnswer(object arg)
@@ -212,21 +227,15 @@ namespace TestDesigner
         }
         private void AddNewAnswer_Exec(object obj)
         {
-            Variants.Add(new Variant() { IsRight = false, Variant_str = "" });
+            Variants.Add(new Variant() { IsRight = false, Variant_str = "<empty>" });
         }
 
-        private bool CanAddQuestion(object arg)
-        {
-            throw new NotImplementedException();
-        }
-        private void ExecAddQuestion(object obj)
-        {
-            throw new NotImplementedException();
-        }
+       
 
         private void ExecDeleteQuestion(object obj)
         {
-            Questions.Remove(CurrentQuestion);
+            var q = obj as Question;
+            Questions.Remove(q);
         }
 
         #endregion

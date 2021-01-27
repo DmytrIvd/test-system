@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\RelayCommand.cs" />
+    <Compile Include="ViewModel\Extensions.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Page Include="View\TestDesignerWindow.xaml">
       <SubType>Designer</SubType>

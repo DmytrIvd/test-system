@@ -19,14 +19,23 @@
             <ColumnDefinition Width="154*"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox x:Name="listBox1" Grid.RowSpan="3" BorderBrush="Black" SelectedItem="{Binding CurrentQuestion}" BorderThickness="1,1,3,1" ItemsSource="{Binding Questions}"  Margin="0"  KeyDown="ListBox_KeyDown"/>
+        <ListBox x:Name="listBox1" Grid.RowSpan="2" BorderBrush="Black" SelectedItem="{Binding CurrentQuestion}" BorderThickness="1,1,3,1" ItemsSource="{Binding Questions}"   Margin="0"  KeyDown="ListBox_KeyDown">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"  Margin="0" Height="30">
+                        <TextBox Text="{Binding Question_str}" IsReadOnly="True"/>
+                        <Button Content="X" FontWeight="Bold" Width="25" CommandParameter="{Binding}" Command="{Binding Path=DataContext.DeleteQuestion,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
 
         <Label Content="Question:" Grid.Column="1" HorizontalAlignment="Left" Margin="3,5,0,0" VerticalAlignment="Top" Width="128" FontWeight="Bold" FontSize="18" Height="34"/>
-        <TextBox Grid.Column="1" Text="{Binding Path= CurrentQuestion.Question_str}" Margin="10,45,17.2,0" TextWrapping="Wrap"  FontSize="18" Background="White" TextAlignment="Center" BorderThickness="2" BorderBrush="Black" Height="36" VerticalAlignment="Top"/>
+        <TextBox Grid.Column="1" Name="textBox1" Text="{Binding Path= QStr}" Margin="10,45,17.2,0" TextWrapping="Wrap"  FontSize="18" Background="White" TextAlignment="Center" BorderThickness="2" BorderBrush="Black" Height="36" VerticalAlignment="Top"/>
 
         <Label Content="Dificulty:" Grid.Column="2" Margin="14.8,5,39.6,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Height="34"/>
-        <ComboBox Grid.Column="2" Margin="5.8,39,9.6,55" ItemsSource="{Binding LevelsOfDificulty}" SelectedItem="{Binding Path=CurrentQuestion.Dificulty}"/>
+        <ComboBox Grid.Column="2" Margin="5.8,39,9.6,55" ItemsSource="{Binding LevelsOfDificulty}" SelectedItem="{Binding Path=Dificulty}"/>
 
 
         <ListBox Grid.Column="1" Margin="0" Grid.Row="1" Background="#FFE1EDFF" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Variants}">
@@ -42,8 +51,6 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-
-
         </ListBox>
         <StackPanel Grid.Column="2"  Margin="5.8,6,-0.4,0" Grid.Row="1" Grid.RowSpan="2">
 
@@ -51,6 +58,6 @@
 
         </StackPanel>
         <Button Content="Save" Grid.Column="1" Margin="5" Command="{Binding SaveQuestion}"  FontWeight="Bold" FontSize="16" BorderThickness="2" BorderBrush="Black" Grid.Row="2" Click="Button_Click"/>
-        <Button Content="Button" Margin="10,86,10.2,10" Command="{Binding ShowQuestion}" Grid.Column="1"/>
+        <Button Content="Add new question"  Margin="5" FontWeight="Bold" FontSize="16" BorderThickness="2" BorderBrush="Black"  Grid.Row="2" Click="Button_Click_1"/>
     </Grid>
 </Window>
