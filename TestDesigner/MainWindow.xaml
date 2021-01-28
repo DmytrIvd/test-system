@@ -29,14 +29,14 @@
         </Grid.ColumnDefinitions>
         <Button Margin="22" Click="NewTest_Click" Background="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" BorderBrush="Black" BorderThickness="2" >
             <StackPanel Orientation="Horizontal">
-                <Image Source="Images//StartNew.png" Width="78" Height="82" />
+                <Image Source="/Images/StartNew.png" Width="78" Height="82" />
                 <TextBlock Text="Create new" Style="{StaticResource TextBlockStyle}" Height="28"/>
 
             </StackPanel>
         </Button>
         <Button Margin="22" Click="EditTest_Click" Grid.Row="1" Background="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}" BorderThickness="2" BorderBrush="Black">
             <StackPanel Orientation="Horizontal">
-                <Image Source="Images//edit.ico"/>
+                <Image Source="/Images/edit.ico"/>
                 <TextBlock Text="Open existing" Style="{StaticResource TextBlockStyle}" Height="28"/>
 
             </StackPanel>

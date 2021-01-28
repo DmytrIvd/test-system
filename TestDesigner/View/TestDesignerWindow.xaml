@@ -7,6 +7,15 @@
         xmlns:local="clr-namespace:TestDesigner"
         mc:Ignorable="d"
         Title="CreateTestWindow" Height="450" Width="800" Background="#FFEAFDFA" Closing="Window_Closing">
+    <Window.Resources>
+        <Style x:Key="RadioButtonTrigger" TargetType="RadioButton">
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Background" Value="Green"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="7*"/>
@@ -25,7 +34,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal"  Margin="0" Height="30">
                         <Border BorderBrush="Black">
-                            <TextBlock Text="{Binding Question_str}" />
+                            <TextBlock Text="{Binding Question_str}"  />
                         </Border>
                         <Button Content="X" FontWeight="Bold" Width="25" CommandParameter="{Binding}" Command="{Binding Path=DataContext.DeleteQuestion,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>
                     </StackPanel>
@@ -37,7 +46,7 @@
 
 
         <Label Content="Question:"  Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Width="128" FontWeight="Bold" FontSize="18" Height="35"/>
-        <TextBox Grid.Column="1" Name="textBox1" Text="{Binding Path= QStr}" Margin="10,14.8,17.2,0" TextWrapping="Wrap"  FontSize="18" Background="White" TextAlignment="Center" BorderThickness="2" BorderBrush="Black" Height="36" VerticalAlignment="Top" Grid.Row="1"/>
+        <TextBox HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Grid.Column="1" Name="textBox1" Text="{Binding Path= QStr}" Margin="10,14.8,17.2,0" TextWrapping="Wrap"  FontSize="18" Background="White" TextAlignment="Center" BorderThickness="2" BorderBrush="Black" Height="60" VerticalAlignment="Top" Grid.Row="1" AcceptsReturn="True"/>
 
         <Label Content="Dificulty:" Grid.Column="2" Margin="14.8,5,39.6,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="18" Height="30"/>
         <ComboBox Grid.Column="2" Margin="5.8,8.8,9.6,0" ItemsSource="{Binding LevelsOfDificulty}" SelectedItem="{Binding Path=Dificulty}" Grid.Row="1" Height="21" VerticalAlignment="Top"/>
@@ -46,10 +55,10 @@
         <ListBox Grid.Column="1" Margin="0,0,0.2,4.2" Grid.Row="2" Background="#FFD0E3FF" ScrollViewer.VerticalScrollBarVisibility="Visible" ItemsSource="{Binding Variants}" BorderBrush="Black" BorderThickness="1,3,3,1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal"  Margin="0" Height="30">
-                        <RadioButton Margin="0" IsChecked="{Binding IsRight}" GroupName="1">
+                    <StackPanel Orientation="Horizontal"  Margin="0" Height="50">
+                        <RadioButton Margin="0" IsChecked="{Binding IsRight}" GroupName="1" Style="{StaticResource RadioButtonTrigger}">
                             <RadioButton.Content>
-                                <TextBox Text="{Binding  Variant_str,Mode=TwoWay}" Width="150" Height="30" />
+                                <TextBox  Text="{Binding  Variant_str,Mode=TwoWay}" HorizontalScrollBarVisibility="Visible" Width="150" Height="50" BorderThickness="2" />
                             </RadioButton.Content>
                         </RadioButton>
                         <Button Content="X" FontWeight="Bold" Width="25" CommandParameter="{Binding}" Command="{Binding Path=DataContext.DeleteAnswer,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"/>

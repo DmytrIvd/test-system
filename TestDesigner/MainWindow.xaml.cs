@@ -68,18 +68,21 @@ namespace TestDesigner
             {
                 Test test;
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(Test));
-                using (FileStream fs = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate))
+                try
                 {
-                    try
-                    {
+                    using (FileStream fs = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate))
+                {
+                   
                         test = (Test)xmlSerializer.Deserialize(fs);
                         return test;
                     }
-                    catch (Exception exception)
-                    {
-                        MessageBox.Show("Cannot read this file! Select another one");
-                        return ShowFileDialog();
-                    }
+                   
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show("Cannot read this file! Select another one");
+                    
+                    return ShowFileDialog();
                 }
             }
             return null;

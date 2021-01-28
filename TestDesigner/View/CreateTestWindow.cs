@@ -53,7 +53,7 @@ namespace TestDesigner
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-           var result= MessageBox.Show("Save changes?", "Warning", MessageBoxButton.YesNoCancel);
+           var result= MessageBox.Show("Save changes?", "Warning", MessageBoxButton.YesNoCancel,MessageBoxImage.Warning);
            switch(result){
                 case MessageBoxResult.Yes:{
                         (DataContext as TestDesignerViewModel).Save.Execute(null);
