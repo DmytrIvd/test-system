@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Base_MVVM;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ using TestLibrary;
 
 namespace TestDesigner
 {
-    class TestDesignerViewModel : INotifyPropertyChanged
+    class TestDesignerViewModel : ViewModelBase
     {
 
         public TestDesignerViewModel()
@@ -29,6 +30,8 @@ namespace TestDesigner
             InitValues();
             this.test = test;
             this.path = path;
+            this.title = test.Title;
+            this.author = test.Author;
             foreach (var q in test.Questions)
                 Questions.Add(q);
         }
@@ -101,6 +104,25 @@ namespace TestDesigner
         public ObservableCollection<int> LevelsOfDificulty { get; set; }
 
         public ObservableCollection<Question> Questions { get; set; }
+
+        private string author;
+        public string Author
+        {
+            get => author;
+            set { author = value; OnPropertyChanged("Author"); }
+        }
+
+        private string title;
+        public string Title
+        {
+            get => title;
+            set
+            {
+
+                title = value;
+                OnPropertyChanged("Title");
+            }
+        }
 
         private Question currentQuestion;
 
@@ -195,6 +217,7 @@ namespace TestDesigner
 
 
         private ICommand saveCommand;
+
         public ICommand Save
         {
 
@@ -272,7 +295,7 @@ namespace TestDesigner
         }
         private void AddNewAnswer_Exec(object obj)
         {
-            Variants.Add(new Variant() { IsRight = false, Variant_str = "<empty>" });
+            Variants.Add(new Variant() { IsRight = false, Variant_str = "<empty>" }); ;
         }
         #endregion
         #region Delete question
@@ -308,42 +331,53 @@ namespace TestDesigner
         }
         private void SaveTestExec(object obj)
         {
-            FileMode fileMode=FileMode.Truncate;
-            test = new Test()
+            if (!string.IsNullOrWhiteSpace(title) && !string.IsNullOrWhiteSpace(author) && Questions.Count != 0)
             {
-                Questions = new List<Question>(this.Questions)
-            };
-            if (string.IsNullOrWhiteSpace(path))
-            {
-
-                if (ShowFileDialog())
+                FileMode fileMode = FileMode.Truncate;
+                test = new Test()
                 {
-                    path = sfd.FileName;
-                  
-                    
-                    if(!File.Exists(path)){
-                        fileMode = FileMode.CreateNew;
+                    Author = author,
+                    Title = title,
+                    Questions = new List<Question>(this.Questions)
+                };
+                if (string.IsNullOrWhiteSpace(path))
+                {
+
+                    if (ShowFileDialog())
+                    {
+                        path = sfd.FileName;
+
+
+                        if (!File.Exists(path))
+                        {
+                            fileMode = FileMode.CreateNew;
+                        }
                     }
-                }
-                else
-                {
-                    return;
-                }
+                    else
+                    {
+                        return;
+                    }
 
+                }
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Test));
+                using (var fs = File.Open(path, fileMode))
+                {
+                    xmlSerializer.Serialize(fs, test);
+                }
             }
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(Test));
-            using (var fs = File.Open(path, fileMode))
+            else
             {
-                xmlSerializer.Serialize(fs, test);
+                string message = "Fill the author and title fields first! ";
+                if (Questions.Count == 0)
+                {
+                    message = "Add some question first!";
+                }
+                MessageBox.Show(message, "Empty fields", MessageBoxButton.OK);
             }
         }
         #endregion
         #endregion
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
+      
     }
+   
 }

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD744B36-87B9-452B-8E17-59F38A1F4A97}</ProjectGuid>
+    <ProjectGuid>{538F2B7F-A82D-4DB2-9641-57B0E58D2A25}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TestDesigner</RootNamespace>
-    <AssemblyName>TestDesigner</AssemblyName>
+    <RootNamespace>Client_Testing</RootNamespace>
+    <AssemblyName>Client_Testing</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -37,7 +37,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,12 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\Extensions.cs" />
-    <Compile Include="ViewModel\ViewModel.cs" />
-    <Page Include="View\TestDesignerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -69,9 +62,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="View\CreateTestWindow.cs">
-      <DependentUpon>TestDesignerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -103,25 +93,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Base_MVVM\Base_MVVM.csproj">
-      <Project>{CBA1699B-9CF9-4C5B-BD69-05FBCF0C3B03}</Project>
-      <Name>Base_MVVM</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestLibrary\TestLibrary.csproj">
-      <Project>{ABFA5365-85F1-4D12-9AD8-BDC72510F9DC}</Project>
-      <Name>TestLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\save.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\edit.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\startnew.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -14,6 +14,8 @@ namespace TestLibrary
         [XmlElement("Text")]
         public string Variant_str { get; set; }
         public bool IsRight { get; set; }
+        [XmlIgnore]
+        public Question Question { get; set; }
 
         public override bool Equals(object obj)
         {

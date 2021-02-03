@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace TestDesigner
+namespace Base_MVVM
 {
     public class RelayCommand : ICommand
     {
