@@ -14,7 +14,7 @@ namespace TestLibrary
         [XmlIgnore]
         public TimeSpan Time { get; set; }
         public string Author { get; set; }
-        public List<Question> Questions { get; set; }
-
+       //Groups to which this test was indended
+        public List<TestGroup> TestGroups{ get; set; }
     }
    }

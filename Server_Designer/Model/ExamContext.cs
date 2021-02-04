@@ -14,14 +14,22 @@ namespace Server_Designer.Model
         {
 
         }
+       
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+        
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserGroup> UserGroups{ get; set; }
+        public DbSet<Group> Groups{ get; set; }
+
+        public DbSet<TestGroup> TestGroups{ get; set; }
+
         public DbSet<Test> Tests { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Variant> Variants { get; set; }
-       
-
-        public DbSet<User> Users { get; set; }
-        public DbSet<Group> Groups{ get; set; }
-       
 
     }
 }

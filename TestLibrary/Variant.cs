@@ -10,7 +10,8 @@ namespace TestLibrary
         public Variant()
         {
         }
-
+        [XmlIgnore]
+        public int Id{ get; set; }
         [XmlElement("Text")]
         public string Variant_str { get; set; }
         public bool IsRight { get; set; }

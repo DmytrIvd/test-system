@@ -8,6 +8,6 @@ namespace TestLibrary
         public string Login { get; set; }
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
-        public List<Group> Groups { get; set; }
+        public IList<UserGroup> UserGroups { get; set; }
     }
 }
