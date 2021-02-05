@@ -65,7 +65,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\LoginForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ServerMain.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -73,12 +77,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Model\EFGenericRepository.cs" />
+    <Compile Include="Model\IRepository.cs" />
+    <Compile Include="Model\UnitOfWork.cs" />
+    <Compile Include="Starter.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="View\LoginForm.xaml.cs">
+      <DependentUpon>LoginForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServerMain.cs">
+      <DependentUpon>ServerMain.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\DatabaseInitializer.cs" />
     <Compile Include="Model\ExamContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -106,11 +119,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="ViewModel\" />
-    <Folder Include="View\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Base_MVVM\Base_MVVM.csproj">
+      <Project>{CBA1699B-9CF9-4C5B-BD69-05FBCF0C3B03}</Project>
+      <Name>Base_MVVM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestLibrary\TestLibrary.csproj">
       <Project>{ABFA5365-85F1-4D12-9AD8-BDC72510F9DC}</Project>
       <Name>TestLibrary</Name>

@@ -13,7 +13,8 @@ namespace TestLibrary
         public Question()
         {
         }
-
+        [XmlIgnore]
+        public int Id{ get; set; }
         [XmlElement("Text")]
         public string Question_str { get; set; }
         public List<Variant> Variants { get; set; }

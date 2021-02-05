@@ -6,8 +6,8 @@ namespace TestLibrary
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<UserGroup> GroupUsers { get; set; }
+        public List<User> Users { get; set; }
         //intended tests
-        public List<TestGroup> TestGroups { get; set; }
+        public List<Test> Tests { get; set; }
     }
 }
