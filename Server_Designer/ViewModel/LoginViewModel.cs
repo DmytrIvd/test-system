@@ -44,12 +44,16 @@ namespace Server_Designer.ViewModel
         private void ExecLoginCommand(object obj)
         {
             var pb = obj as PasswordBox;
-            var user = Users.First(u => u.Login == pb.Password && u.Login == LoginStr);
-            if (user != null)
+            var expression = new Func<User,bool>(u => u.Password == pb.Password && u.Login == LoginStr);
+            if (Users.Any(expression))
             {
-                User = user;
-                CloseForm?.Invoke(true, EventArgs.Empty);
-                return;
+                var user = Users.First(expression);
+                if (user != null)
+                {
+                    User = user;
+                    CloseForm?.Invoke(true, EventArgs.Empty);
+                    return;
+                }
             }
             MessageBox.Show("The user is not exits");
 

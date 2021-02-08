@@ -8,10 +8,11 @@ using System.Xml.Serialization;
 namespace TestLibrary
 {
     [Serializable]
-    public class Question
+    public class Question:IEntity
     {
         public Question()
         {
+            Variants = new List<Variant>();
         }
         [XmlIgnore]
         public int Id{ get; set; }

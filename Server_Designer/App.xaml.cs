@@ -16,23 +16,47 @@ namespace Server_Designer
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
+        private void ApplicationStart(object sender, StartupEventArgs e)
         {
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             UnitOfWork unitOfWork = new UnitOfWork();
             LoginForm loginForm = new LoginForm();
-            
+
             LoginViewModel loginViewModel = new LoginViewModel(unitOfWork.Users.Get());
+
             loginViewModel.CloseForm += loginForm.ButtonClicked;
             loginForm.DataContext = loginViewModel;
+            ServerMain serverMain = new ServerMain();
             if (loginForm.ShowDialog() == true)
             {
-                ServerMain serverMain = new ServerMain();
+                MainViewModel mainViewModel = new MainViewModel(unitOfWork);
+                serverMain.DataContext = mainViewModel;
+                serverMain.Closing +=mainViewModel.OnViewClosing;
+                Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+                Current.MainWindow = serverMain;
+               
                 serverMain.Show();
+                
             }
-            unitOfWork.Dispose();
+            else{
+                Current.Shutdown(-1);
+            }
+           
+           
+
+           
             //LoginViewModel loginViewModel = new LoginViewModel();
+
+            //show your MainWindow
+        }
+        protected override void OnStartup(StartupEventArgs e)
+        {
+
+            //ServerMain serverMain = new ServerMain();
+            //serverMain.Show();
             base.OnStartup(e);
         }
+       
     }
 }

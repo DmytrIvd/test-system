@@ -6,15 +6,158 @@
         xmlns:local="clr-namespace:Server_Designer"
         mc:Ignorable="d"
         Title="Main window" Height="450" Width="800">
-    <Grid>
-        <TabControl Margin="0" TabStripPlacement="Left">
-            <TabItem Header="Users">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-            <TabItem Header="Statistics">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-        </TabControl>
 
-    </Grid>
+    <TabControl Margin="0" TabStripPlacement="Left">
+        <TabControl.Resources>
+            <Style x:Key="UsersListBoxStyle" TargetType="ListBox">
+                <Setter Property="Margin" Value="10"></Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Login:</Label>
+                                <TextBox IsReadOnly="True" Text="{Binding Login}" ToolTip="Login"></TextBox>
+                                <Label>Password:</Label>
+                                <TextBox IsReadOnly="True" Text="{Binding Password}" ToolTip="Password"></TextBox>
+                                <RadioButton IsEnabled="False" IsChecked="{Binding IsAdmin}">Is admin</RadioButton>
+                                <Button Command="{Binding DataContext.Delete,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">Delete</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible"/>
+                <Setter Property="SelectionMode" Value="Single"/>
+            </Style>
+        </TabControl.Resources>
+        <TabItem DataContext="{Binding Children[0]}" Header="Users">
+            <Grid Background="#FFE5E5E5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="177*"/>
+                    <RowDefinition Height="205*"/>
+                    <RowDefinition Height="33*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox SelectedValue="{Binding User}"  Style="{StaticResource UsersListBoxStyle}" ItemsSource="{Binding Path=Users}"  Grid.Column="1" Grid.Row="1"   />
+                <ListBox SelectedValue="{Binding User}" Style="{StaticResource UsersListBoxStyle}" ItemsSource="{Binding Path=Admins}"    Grid.Row="1" />
+
+
+
+
+
+                <GroupBox Header="User" Grid.ColumnSpan="2" Margin="0,0,-0.2,4.8" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="211*"/>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="276*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="66*"/>
+                            <RowDefinition Height="30*"/>
+                            <RowDefinition Height="59*"/>
+                        </Grid.RowDefinitions>
+                        <TextBox HorizontalAlignment="Left" Height="23" Margin="91,33,0,0" TextWrapping="Wrap" Text="{Binding Login}" VerticalAlignment="Top" Width="120"/>
+                        <TextBox  HorizontalAlignment="Left" Height="23" Margin="9.8,33,0,0" TextWrapping="Wrap" Text="{Binding Password}" VerticalAlignment="Top" Width="120" Grid.Column="2"/>
+                        <CheckBox IsChecked="{Binding IsAdmin}" Content="IsAdmin" HorizontalAlignment="Left" Margin="69.8,5.4,0,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1"/>
+                        <Button Command="{Binding Save}" Content="Save" Margin="19.8,19.8,19.8,0" Grid.Row="2" VerticalAlignment="Top" Grid.Column="1" Height="29"/>
+                        <Label Content="Login:" HorizontalAlignment="Left" Margin="25,33,0,0.2"/>
+                        <Label Content="Password:" HorizontalAlignment="Left" Margin="166.8,33,0,6.2" Grid.ColumnSpan="2" Grid.Column="1"/>
+
+                    </Grid>
+                </GroupBox>
+                <Button Grid.ColumnSpan="2" Content="Refresh" Command="{Binding Refresh}"  Margin="0" Grid.Row="2" BorderBrush="Black" />
+            </Grid>
+        </TabItem>
+        <TabItem DataContext="{Binding Children[1]}" Header="Groups">
+
+            <Grid Background="#FFE5E5E5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="56*"/>
+                    <RowDefinition Height="135*"/>
+                    <RowDefinition Height="16*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="243*"/>
+                    <ColumnDefinition Width="194*"/>
+                    <ColumnDefinition Width="292*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox ItemsSource="{Binding Users}" SelectedValue="{Binding User}" Margin="0,0,4.2,0.4" Grid.Row="1" BorderBrush="Black" BorderThickness="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True" Text="{Binding Login}"></TextBox>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox ItemsSource="{Binding Groups}" SelectedValue="{Binding Group}" Grid.Column="2" Margin="1.2,0,-0.2,0.4" BorderBrush="Black" BorderThickness="2" Grid.Row="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel  Orientation="Horizontal">
+                                <TextBox IsReadOnly="True" Text="{Binding Name}"/>
+                                <Button Content="Delete" Command="{Binding DataContext.Delete,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <GroupBox Header="Group"  Grid.Column="2" Margin="2.2,0,-0.2,0">
+                    <Grid>
+                        <Label Margin="3,6,0,32.6" HorizontalAlignment="Left" Width="126">Group Name</Label>
+                        <TextBox  Margin="0,10,-0.6,44.6" TextWrapping="Wrap" Text="{Binding Name}" HorizontalAlignment="Right" Width="195"/>
+                        <Button Command="{Binding Save}" Content="Save" Margin="0,0,-0.2,4.6" Height="19" VerticalAlignment="Bottom"/>
+                    </Grid>
+                </GroupBox>
+                <Button  Margin="0,270,-0.2,0.4" Command="{Binding Refresh}" BorderBrush="Black" BorderThickness="2" Content="Refresh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+                <GroupBox Header="Add relationship" Margin="0,0,2.8,4" Grid.ColumnSpan="2">
+                    <Grid>
+                        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding User.Login}" Width="151" Height="21" VerticalAlignment="Top" IsReadOnly="True"/>
+                        <TextBox Margin="0,0,9.8,0" TextWrapping="Wrap" Text="{Binding Group.Name}" HorizontalAlignment="Right" Width="175" Height="21" VerticalAlignment="Top" IsReadOnly="True"/>
+                        <Button Content="Add relationship" Command="{Binding AddRelationship}" Margin="0,0,-0.2,26.4" Height="20" VerticalAlignment="Bottom"/>
+                        <Button Content="Drop relationship" Command="{Binding DropRelationship}" Margin="0,0,-0.2,0.4" Height="21" VerticalAlignment="Bottom"/>
+
+                    </Grid>
+                </GroupBox>
+                <ListBox ItemsSource="{Binding GroupsUsers}" Margin="7.8,1,9.8,0.4" BorderBrush="Black" BorderThickness="2" Grid.Row="1" Grid.Column="1"/>
+
+            </Grid>
+        </TabItem>
+        <TabItem Header="Tests">
+
+            <Grid Background="#FFE5E5E5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="177*"/>
+                    <RowDefinition Height="238*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Statistics">
+
+            <Grid Background="#FFE5E5E5">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="177*"/>
+                    <RowDefinition Height="238*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+            </Grid>
+        </TabItem>
+    </TabControl>
+
 </Window>

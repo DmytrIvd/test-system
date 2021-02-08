@@ -2,7 +2,7 @@
 
 namespace TestLibrary
 {
-    public class Result
+    public class Result:IEntity
     {
         public int Id { get; set; }
         public DateTime dateOfPassing { get; set; }

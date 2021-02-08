@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using TestLibrary;
 
 namespace Server_Designer.Model
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : class, IEntity
     {
         void Create(TEntity item);
         TEntity FindById(int id);
@@ -13,5 +15,8 @@ namespace Server_Designer.Model
         IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
         void Remove(TEntity item);
         void Update(TEntity item);
-    }
+        IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
+    IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,
+            params Expression<Func<TEntity, object>>[] includeProperties);
+        }
 }

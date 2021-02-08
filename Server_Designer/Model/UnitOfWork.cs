@@ -98,5 +98,8 @@ namespace Server_Designer.Model
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+        ~UnitOfWork(){
+            Dispose();
+        }
     }
 }

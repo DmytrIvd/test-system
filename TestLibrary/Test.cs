@@ -5,8 +5,14 @@ using System.Xml.Serialization;
 namespace TestLibrary
 {
     [Serializable]
-    public class Test
+    public class Test:IEntity
     {
+        public Test()
+        {
+            Groups = new List<Group>();
+            Questions = new List<Question>();
+        }
+
         [XmlIgnore]
         public int Id { get; set; }
       
@@ -15,7 +21,7 @@ namespace TestLibrary
         public TimeSpan Time { get; set; }
         public string Author { get; set; }
        //Groups to which this test was indended
-        public List<Group> Groups{ get; set; }
-        public List<Question> Questions{ get; set; }
+        public virtual List<Group> Groups{ get; set; }
+        public virtual List<Question> Questions{ get; set; }
     }
    }
