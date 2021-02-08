@@ -15,6 +15,10 @@ namespace Server_Designer.Model
         IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
         void Remove(TEntity item);
         void Update(TEntity item);
+        void Update(Expression<Func<TEntity, bool>> filter,
+    IEnumerable<object> updatedSet, // Updated many-to-many relationships
+    IEnumerable<object> availableSet, // Lookup collection
+    string propertyName);
         IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
     IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,
             params Expression<Func<TEntity, object>>[] includeProperties);

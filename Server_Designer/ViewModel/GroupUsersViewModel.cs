@@ -16,12 +16,15 @@ namespace Server_Designer.ViewModel
     {
         IRepository<User> usersRepo;
         IRepository<Group> groupsRepo;
-
+        //Adding literally just for one method
+        //:, )
+        IRepository<Test> testsRepo;
         private Group group;
         private User user;
         private ICommand addRelationshipCommand;
         private ICommand dropRelationshipCommand;
         private string name;
+        private RelayCommand deleteUserCommand;
 
         public ObservableCollection<User> Users { get; set; }
         public ObservableCollection<Group> Groups { get; set; }
@@ -85,10 +88,11 @@ namespace Server_Designer.ViewModel
             }
         }
         #endregion
-        public GroupUsersViewModel(IRepository<User> users, IRepository<Group> groups)
+        public GroupUsersViewModel(IRepository<User> users, IRepository<Group> groups,IRepository<Test> tests)
         {
             this.usersRepo = users ?? throw new ArgumentNullException(nameof(users));
             this.groupsRepo = groups ?? throw new ArgumentNullException(nameof(groups));
+            this.testsRepo = tests ?? throw new ArgumentNullException(nameof(tests)); ;
             Users = new ObservableCollection<User>();
             Groups = new ObservableCollection<Group>();
             GroupsUsers = new ObservableCollection<User>();
@@ -116,11 +120,16 @@ namespace Server_Designer.ViewModel
             //Delete all keys from users
             if (g.Tests != null)
                 g.Tests.Clear();
+            groupsRepo.Update(gr => gr.Id == Group.Id, Group.Tests, testsRepo.Get(), "Tests");
+            SaveAll();
+
             if (g.Users != null)
                 g.Users.Clear();
+            groupsRepo.Update(gr => gr.Id == Group.Id, Group.Users, usersRepo.Get(), "Users");
+           
             groupsRepo.Remove(g);
-
             SaveAll();
+
             RefreshExec(null);
         }
 
@@ -191,47 +200,76 @@ namespace Server_Designer.ViewModel
                 return dropRelationshipCommand;
             }
         }
+        public ICommand DeleteUser
+        {
+            get
+            {
+                if (deleteUserCommand == null)
+                {
+                    deleteUserCommand = new RelayCommand(ExecDeleteUser, CanExecDeleteUser);
+                }
+                return deleteUserCommand;
+            }
+        }
+
+        private bool CanExecDeleteUser(object arg)
+        {
+            return arg != null;
+        }
+        private void DropRelationshipMethod(User user){
+            Group.Users.RemoveAll(u => u.Id == user.Id);
+            groupsRepo.Update(g => g.Id == Group.Id, Group.Users, usersRepo.Get(), "Users");
+            SaveAll();
+            ChangeProperties(Group);
+        }
+        private void ExecDeleteUser(object obj)
+        {
+           if(obj is User user){
+                DropRelationshipMethod(user);
+            }
+        }
 
         private bool IsUserAndGroupHaveRelationships()
         {
-            if (User != null && Group != null && User.Groups != null && Group.Users != null)
-            {
+           
                 //Make better
                 var group = User.Groups.FirstOrDefault(g => g.Id == Group.Id);
                 var user = Group.Users.FirstOrDefault(u => u.Id == User.Id);
                 return group != null && user != null;
-            }
-            return false;
+            
+          
         }
         private bool CanExecDropRelationship(object arg)
         {
-            return IsUserAndGroupHaveRelationships();
+        
+            return Group!=null&&User!=null&& IsUserAndGroupHaveRelationships();
 
         }
 
         private void ExecDropRelationship(object obj)
         {
-            Group.Users.Remove(User);
-            User.Groups.Remove(Group);
-            SaveAll();
+            DropRelationshipMethod(User);
+           
         }
 
         private bool CanExecAddRelationship(object arg)
         {
-            return User != null && Group != null && !IsUserAndGroupHaveRelationships();
+            return Group != null && User != null && !IsUserAndGroupHaveRelationships();
         }
 
         private void ExecAddRelationship(object obj)
         {
-            // var attachedGroup=   groupsRepo.FindById(Group.Id);
-            //attachedGroup.Users.Add(User);
-            Group.Users.Add(User);
-            // User.Groups.Add(Group);
+            if (!Group.Users.Exists(x=>x.Id==User.Id)) {
+                // var attachedGroup=   groupsRepo.FindById(Group.Id);
+                //attachedGroup.Users.Add(User);
+                Group.Users.Add(User);
+                // User.Groups.Add(Group);
 
-            groupsRepo.Update(Group);
-            //usersRepo.Update(User);
-            SaveAll();
-            ChangeProperties(Group);
+                groupsRepo.Update(g => g.Id == Group.Id, Group.Users, usersRepo.Get(), "Users");
+                //usersRepo.Update(User);
+                SaveAll();
+                ChangeProperties(Group);
+            }
         }
     }
 }

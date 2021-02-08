@@ -16,7 +16,7 @@ namespace Server_Designer.ViewModel
             _children = new ObservableCollection<object>();
 
             _children.Add(new UsersViewModel(unitOfWork.Users));
-            _children.Add(new GroupUsersViewModel(unitOfWork.Users, unitOfWork.Groups));
+            _children.Add(new GroupUsersViewModel(unitOfWork.Users, unitOfWork.Groups,unitOfWork.Tests));
             Subscribe();
 
         }
