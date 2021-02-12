@@ -80,13 +80,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\EFGenericRepository.cs" />
-    <Compile Include="Model\IRepository.cs" />
-    <Compile Include="Model\UnitOfWork.cs" />
+    <Compile Include="Model\DataBase\EFGenericRepository.cs" />
+    <Compile Include="Model\DataBase\IRepository.cs" />
+    <Compile Include="Model\DataBase\UnitOfWork.cs" />
     <Compile Include="Starter.cs" />
     <Compile Include="ViewModel\EntityViewModel.cs" />
     <Compile Include="ViewModel\GroupUsersViewModel.cs" />
-    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\TestUsersViewModel.cs" />
     <Compile Include="ViewModel\UsersViewModel.cs" />
@@ -99,8 +98,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\DatabaseInitializer.cs" />
-    <Compile Include="Model\ExamContext.cs" />
+    <Compile Include="Model\DataBase\DatabaseInitializer.cs" />
+    <Compile Include="Model\DataBase\ExamContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -132,6 +131,10 @@
     <ProjectReference Include="..\Base_MVVM\Base_MVVM.csproj">
       <Project>{CBA1699B-9CF9-4C5B-BD69-05FBCF0C3B03}</Project>
       <Name>Base_MVVM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Networking\Networking.csproj">
+      <Project>{9B74BF3A-63EE-4411-9D45-72AFD2D014C4}</Project>
+      <Name>Networking</Name>
     </ProjectReference>
     <ProjectReference Include="..\TestLibrary\TestLibrary.csproj">
       <Project>{ABFA5365-85F1-4D12-9AD8-BDC72510F9DC}</Project>

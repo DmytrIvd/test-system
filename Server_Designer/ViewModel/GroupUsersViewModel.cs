@@ -55,7 +55,7 @@ namespace Server_Designer.ViewModel
             get => name; set
             {
                 name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged("Title");
             }
         }
         public ObservableCollection<User> GroupsUsers { get; set; }
@@ -113,10 +113,6 @@ namespace Server_Designer.ViewModel
         {
             var g = obj as Group;
 
-            //Якщо ми маємо видалити цю групу
-            //Отжеее
-            //Так само ми маємо стерти всі "згадки про неї"
-
             //Delete all keys from users
             if (g.Tests != null)
                 g.Tests.Clear();
@@ -165,16 +161,24 @@ namespace Server_Designer.ViewModel
         {
             if (PropertiesIsNotNull())
             {
-                if (Id == 0)
+              var g=  groupsRepo.GetWithInclude(x => x.Name == Name);
+                if (g.Count()==0)
                 {
-                    groupsRepo.Create(new Group { Name = Name });
+                    if (Id == 0)
+                    {
+                        groupsRepo.Create(new Group { Name = Name });
+                    }
+                    else
+                    {
+                        groupsRepo.Update(new Group { Id = Id, Name = Name });
+                    }
+                    SaveAll();
+                    RefreshExec(null);
                 }
-                else
-                {
-                    groupsRepo.Update(new Group { Id = Id, Name = Name });
+                else{
+                    MessageBox.Show
+                    ("This group already exists");
                 }
-                SaveAll();
-                RefreshExec(null);
             }
         }
         #endregion
@@ -229,13 +233,13 @@ namespace Server_Designer.ViewModel
             }
         }
 
-        private bool IsUserAndGroupHaveRelationships()
+        private bool IsUserAndGroupHaveRelationships()   
         {
            
                 //Make better
                 var group = User.Groups.FirstOrDefault(g => g.Id == Group.Id);
                 var user = Group.Users.FirstOrDefault(u => u.Id == User.Id);
-                return group != null && user != null;
+                return group != null || user != null;
             
           
         }

@@ -143,17 +143,23 @@ namespace Server_Designer.ViewModel
         {
             if (PropertiesIsNotNull())
             {
-                if (Id == 0)
+               var u= usersRepo.GetWithInclude(x => x.Login == Login && x.Password == Password);
+                if (u .Count()==0)
                 {
-                    usersRepo.Create(new User { IsAdmin = IsAdmin, Login = Login, Password = Password });
-                }
-                else
-                {
+                    if (Id == 0)
+                    {
+                        usersRepo.Create(new User { IsAdmin = IsAdmin, Login = Login, Password = Password });
+                    }
+                    else
+                    {
 
-                    usersRepo.Update(new User {Id=Id ,IsAdmin = IsAdmin, Login = Login, Password = Password });
+                        usersRepo.Update(new User { Id = Id, IsAdmin = IsAdmin, Login = Login, Password = Password });
+                    }
+                    SaveAll();
+                    RefreshExec(null);
+                }else{
+                    MessageBox.Show("This user already exists");
                 }
-                SaveAll();
-                RefreshExec(null);
             }
 
         }

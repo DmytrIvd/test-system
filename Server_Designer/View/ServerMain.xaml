@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Server_Designer"
         mc:Ignorable="d"
-        Title="Main window" Height="450" Width="800">
+        Title="{Binding User.Login}" Height="450" Width="800">
 
     <TabControl Margin="0" TabStripPlacement="Left">
         <TabControl.Resources>
@@ -137,18 +137,67 @@
 
             </Grid>
         </TabItem>
-        <TabItem Header="Tests">
+        <TabItem DataContext="{Binding Children[2]}" Header="Tests">
 
             <Grid Background="#FFE5E5E5">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="177*"/>
-                    <RowDefinition Height="238*"/>
+                    <RowDefinition Height="56*"/>
+                    <RowDefinition Height="135*"/>
+                    <RowDefinition Height="16*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="223*"/>
+                    <ColumnDefinition Width="214*"/>
+                    <ColumnDefinition Width="292*"/>
                 </Grid.ColumnDefinitions>
+                <ListBox ItemsSource="{Binding Groups}" SelectedValue="{Binding Group}" Margin="0,0,5.2,0.4" Grid.Row="1" BorderBrush="Black" BorderThickness="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True" Text="{Binding Name}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox ItemsSource="{Binding Tests}" SelectedValue="{Binding Test}" Grid.Column="2" Margin="1.2,0,-0.2,0.4" BorderBrush="Black" BorderThickness="2" Grid.Row="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel  Orientation="Horizontal">
+                                <TextBox IsReadOnly="True" Text="{Binding Title}"/>
+                                <!--<Button Content="Delete" Command="{Binding DataContext.Delete,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}"/>-->
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <GroupBox Header="Test" Margin="223,0,-0.2,0" Grid.ColumnSpan="3">
+                    <Grid>
+                        <Button Command="{Binding Save}" Content="Save" Margin="0,0,-0.2,4.6" Height="19" VerticalAlignment="Bottom"/>
+                        <Button Content="Select test" Command="{Binding SelectTest}" HorizontalAlignment="Left" Margin="203,14,0,0" VerticalAlignment="Top" Width="265"/>
+                        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,14,0,0" TextWrapping="Wrap" Text="{Binding Address}" VerticalAlignment="Top" Width="178"/>
+                    </Grid>
+                </GroupBox>
+                <Button  Margin="0,270,-0.2,0.4" Command="{Binding Refresh}" BorderBrush="Black" BorderThickness="2" Content="Refresh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+                <GroupBox Header="Add relationship" Margin="0,0,5.2,4">
+                    <Grid>
+                        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Test.Title}" Width="71" Height="21" VerticalAlignment="Top" IsReadOnly="True"/>
+                        <TextBox Margin="0,0,9.2,0" TextWrapping="Wrap" Text="{Binding Group.Name}" HorizontalAlignment="Right" Width="72" Height="21" VerticalAlignment="Top" IsReadOnly="True"/>
+                        <Button Content="Add relationship" Command="{Binding AddRelationship}" Margin="0,0,-0.2,26.4" Height="20" VerticalAlignment="Bottom"/>
+                        <Button Content="Drop relationship" Command="{Binding DropRelationship}" Margin="0,0,-0.2,0.4" Height="21" VerticalAlignment="Bottom"/>
+
+                    </Grid>
+                </GroupBox>
+                <ListBox ItemsSource="{Binding TestGroups}" Margin="223,1,2.8,0.4" BorderBrush="Black" BorderThickness="2" Grid.Row="1" Grid.ColumnSpan="2">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Test Name:</Label>
+                                <TextBox Text="{Binding Name}"/>
+                                <!--<Button Command="{Binding DataContext.DeleteUser,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">Delete</Button>-->
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
             </Grid>
         </TabItem>

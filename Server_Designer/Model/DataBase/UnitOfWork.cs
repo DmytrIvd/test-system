@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Linq;
 using TestLibrary;
 
 namespace Server_Designer.Model
 {
     public class UnitOfWork : IDisposable
     {
-
-        private ExamContext examContext=new ExamContext();
+        public EventHandler VerifyLogin;
+        private ExamContext examContext = new ExamContext();
         private EFGenericRepository<User> users;
         private EFGenericRepository<Group> groups;
         private EFGenericRepository<Result> results;
@@ -15,7 +16,7 @@ namespace Server_Designer.Model
         private EFGenericRepository<Variant> variants;
 
 
-        private bool disposedValue = true;
+        private bool disposedValue;
 
         public void Save()
         {
@@ -31,6 +32,15 @@ namespace Server_Designer.Model
                 return users;
             }
         }
+
+        public void Login(object sender, Func<User, bool> e)
+        {
+       
+            var user = Users.GetWithInclude(e);
+            
+            VerifyLogin?.Invoke(user.Count() != 0, EventArgs.Empty);
+        }
+
         public EFGenericRepository<Group> Groups
         {
             get
@@ -83,9 +93,9 @@ namespace Server_Designer.Model
             {
                 if (disposing)
                 {
-                    examContext.Dispose();
+                    
                 }
-
+                examContext.Dispose();
                 disposedValue = true;
             }
         }
@@ -98,7 +108,8 @@ namespace Server_Designer.Model
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-        ~UnitOfWork(){
+        ~UnitOfWork()
+        {
             Dispose();
         }
     }

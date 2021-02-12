@@ -13,18 +13,17 @@ namespace Server_Designer.ViewModel
 {
     public class LoginViewModel : ViewModelBase
     {
+        bool Mode;
         public event EventHandler CloseForm;
-        public LoginViewModel(IEnumerable<User> Users)
+        public event EventHandler<Func<User, bool>> LoginTry;
+        public LoginViewModel(bool IsAdmin=true)
         {
-            this.Users = Users;
-            
+
+            Mode = IsAdmin;
         }
-        protected IEnumerable<User> Users { get; set; }
+        #region Commands
         private ICommand logincommand;
         private ICommand cancelCommand;
-        private string loginStr;
-
-        public string LoginStr { get => loginStr; set { loginStr = value; OnPropertyChanged("LoginStr"); } }
         public ICommand LoginCommand
         {
             get
@@ -34,33 +33,6 @@ namespace Server_Designer.ViewModel
                 return logincommand;
             }
         }
-        public User User { get; set; }
-        private bool CanExecLoginCommand(object arg)
-        {
-            var pb = arg as PasswordBox;
-            return !string.IsNullOrWhiteSpace(LoginStr) && !string.IsNullOrWhiteSpace(pb.Password);
-        }
-
-        private void ExecLoginCommand(object obj)
-        {
-            var pb = obj as PasswordBox;
-            var expression = new Func<User,bool>(u => u.Password == pb.Password && u.Login == LoginStr);
-            if (Users.Any(expression))
-            {
-                var user = Users.First(expression);
-                if (user != null)
-                {
-                    User = user;
-                    CloseForm?.Invoke(true, EventArgs.Empty);
-                    return;
-                }
-            }
-            MessageBox.Show("The user is not exits");
-
-
-
-        }
-
         public ICommand CancelCommand
         {
             get
@@ -70,7 +42,45 @@ namespace Server_Designer.ViewModel
                 return cancelCommand;
             }
         }
+        #endregion
+        #region Properties
+        private string loginStr;
 
+        public string LoginStr { get => loginStr; set { loginStr = value; OnPropertyChanged("LoginStr"); } }
+
+        public User User { get; set; }
+        #endregion
+        private bool CanExecLoginCommand(object arg)
+        {
+            var pb = arg as PasswordBox;
+            return !string.IsNullOrWhiteSpace(LoginStr) && !string.IsNullOrWhiteSpace(pb.Password);
+        }
+
+        private void ExecLoginCommand(object obj)
+        {
+            var pb = obj as PasswordBox;
+           
+            var expression = new Func<User, bool>(u => u.Password == pb.Password && u.Login == LoginStr&&u.IsAdmin==Mode);
+            User = new User { Password = pb.Password, Login = LoginStr};
+            LoginTry?.Invoke(this, expression);
+
+
+
+
+        }
+
+        public void LoginCallBack(object obj,EventArgs args)
+        {
+            if (obj is bool val)
+            {
+                if (val)
+                {
+                    CloseForm?.Invoke(val,EventArgs.Empty);
+                    return;
+                }
+            }
+            MessageBox.Show("This admin does not exist");
+        }
 
         private void ExecCancelCommand(object obj)
         {

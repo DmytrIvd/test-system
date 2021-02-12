@@ -23,14 +23,20 @@ namespace Server_Designer
             UnitOfWork unitOfWork = new UnitOfWork();
             LoginForm loginForm = new LoginForm();
 
-            LoginViewModel loginViewModel = new LoginViewModel(unitOfWork.Users.Get());
+            LoginViewModel loginViewModel = new LoginViewModel();
+            unitOfWork.VerifyLogin += loginViewModel.LoginCallBack;
 
             loginViewModel.CloseForm += loginForm.ButtonClicked;
+
+            loginViewModel.LoginTry += unitOfWork.Login;
+            
             loginForm.DataContext = loginViewModel;
             ServerMain serverMain = new ServerMain();
             if (loginForm.ShowDialog() == true)
             {
-                MainViewModel mainViewModel = new MainViewModel(unitOfWork);
+            //Start the server
+
+                MainViewModel mainViewModel = new MainViewModel(unitOfWork,loginViewModel.User);
                 serverMain.DataContext = mainViewModel;
                 serverMain.Closing +=mainViewModel.OnViewClosing;
                 Current.ShutdownMode = ShutdownMode.OnMainWindowClose;

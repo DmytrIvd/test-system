@@ -1,12 +1,13 @@
-﻿<Window x:Class="Client_Testing.MainWindow"
+﻿<Window x:Class="Client_Testing.View.LoginUser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Client_Testing"
+        xmlns:local="clr-namespace:Client_Testing.View"
+        xmlns:login="clr-namespace:Base_MVVM.BaseLogin;assembly=Base_MVVM"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="LoginUser" Height="250" Width="400">
+    
+        <login:LoginUserControl/>
+   
 </Window>

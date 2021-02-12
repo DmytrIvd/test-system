@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TestLibrary
 {
-    public class Group:IEntity
+    [Serializable]
+    public class Group : IEntity
     {
         public Group()
         {
@@ -16,5 +18,5 @@ namespace TestLibrary
         //intended tests
         public virtual List<Test> Tests { get; set; }
     }
-   
+
 }

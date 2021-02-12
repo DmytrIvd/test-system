@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TestLibrary
 {
+    [Serializable]
     public class User : IEntity
     {
         public User()
