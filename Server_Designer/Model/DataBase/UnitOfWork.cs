@@ -40,15 +40,16 @@ namespace Server_Designer.Model
 
         public void Login(User user)
         {
-       
-            var users = Users.GetWithInclude(u=>u.IsAdmin==user.IsAdmin&&u.Login==user.Login&&u.Password==user.Password);
-            
-            VerifyLogin?.Invoke(users.Count() != 0);
-        }
-        public void LoginClient(User user,TcpClient tcpClient){
+
             var users = Users.GetWithInclude(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
 
-           VerifyClientLogin?.Invoke(users.Count() != 0,tcpClient);
+            VerifyLogin?.Invoke(users.Count() != 0);
+        }
+        public void LoginClient(User user, TcpClient tcpClient)
+        {
+            var users = Users.GetWithInclude(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
+
+            VerifyClientLogin?.Invoke(users.Count() != 0, tcpClient);
         }
 
         public EFGenericRepository<Group> Groups
@@ -103,7 +104,7 @@ namespace Server_Designer.Model
             {
                 if (disposing)
                 {
-                    
+
                 }
                 examContext.Dispose();
                 disposedValue = true;

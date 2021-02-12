@@ -60,6 +60,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClientWrapper.cs" />
+    <Compile Include="GroupTestsViewModel.cs" />
+    <Compile Include="MainUserViewModel.cs" />
     <Compile Include="View\LoginUser.xaml.cs">
       <DependentUpon>LoginUser.xaml</DependentUpon>
     </Compile>

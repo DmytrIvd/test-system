@@ -45,10 +45,6 @@
                 <ListBox SelectedValue="{Binding User}"  Style="{StaticResource UsersListBoxStyle}" ItemsSource="{Binding Path=Users}"  Grid.Column="1" Grid.Row="1"   />
                 <ListBox SelectedValue="{Binding User}" Style="{StaticResource UsersListBoxStyle}" ItemsSource="{Binding Path=Admins}"    Grid.Row="1" />
 
-
-
-
-
                 <GroupBox Header="User" Grid.ColumnSpan="2" Margin="0,0,-0.2,4.8" >
                     <Grid>
                         <Grid.ColumnDefinitions>

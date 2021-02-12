@@ -66,7 +66,7 @@ namespace Server_Designer
             }
         }
 
-        private void GotFullChunks(MessageType messageType, TcpClient client, List<Chunk> receivedChunks)
+        private void GotFullChunks(MessageType messageType, TcpClient client, List<byte[]> receivedChunks)
         {
             //1. Client send Login Try
             //2. Client asks for a groups
@@ -76,25 +76,25 @@ namespace Server_Designer
             {
                 case MessageType.ClientLoginTry:
                     {
-                        var val = CombineChunksInto<User>(receivedChunks);
+                        var val = receivedChunks.CombineChunksInto<User>();
                         LogTry?.Invoke(val, client);
                         break;
                     }
                 case MessageType.ClientRequestGroups:
                     {
-                        var val = CombineChunksInto<User>(receivedChunks);
+                        var val = receivedChunks.CombineChunksInto<User>();
                         GetGroups?.Invoke(val, client);
                         break;
                     }
                 case MessageType.ClientRequestTest:
                     {
-                        var val = CombineChunksInto<Test>(receivedChunks);
+                        var val = receivedChunks.CombineChunksInto<Test>();
                         GetTests?.Invoke(val, client);
                         break;
                     }
                 case MessageType.ClientSendResult:
                     {
-                        var val = CombineChunksInto<Result>(receivedChunks);
+                        var val = receivedChunks.CombineChunksInto<Result>();
                         ResultSend?.Invoke(val, client);
                         break;
 
@@ -102,23 +102,7 @@ namespace Server_Designer
             }
         }
 
-        private T CombineChunksInto<T>(List<Chunk> receivedChunks)
-        {
-            var data = receivedChunks.CombineChunks();
-            var obj = data.Deserialize();
-            if (obj is T)
-            {
-                return (T)obj;
-            }
-            try
-            {
-                return (T)Convert.ChangeType(obj, typeof(T));
-            }
-            catch (InvalidCastException)
-            {
-                return default(T);
-            }
-        }
+       
         #endregion
         #region Cleaners
         public void Dispose()

@@ -13,10 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Base_MVVM", "Base_MVVM\Base
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client_Testing", "Client_Testing\Client_Testing.csproj", "{538F2B7F-A82D-4DB2-9641-57B0E58D2A25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingTheServer", "TestingTheServer\TestingTheServer.csproj", "{22B69CC2-5B6C-43F6-BB71-EB5301A2F25C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingClient", "TestingClient\TestingClient.csproj", "{0CD3F566-B1DB-4C3D-ABFB-140CA8F45781}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Networking", "Networking\Networking.csproj", "{9B74BF3A-63EE-4411-9D45-72AFD2D014C4}"
 EndProject
 Global
@@ -45,14 +41,6 @@ Global
 		{538F2B7F-A82D-4DB2-9641-57B0E58D2A25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{538F2B7F-A82D-4DB2-9641-57B0E58D2A25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{538F2B7F-A82D-4DB2-9641-57B0E58D2A25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22B69CC2-5B6C-43F6-BB71-EB5301A2F25C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22B69CC2-5B6C-43F6-BB71-EB5301A2F25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22B69CC2-5B6C-43F6-BB71-EB5301A2F25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22B69CC2-5B6C-43F6-BB71-EB5301A2F25C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CD3F566-B1DB-4C3D-ABFB-140CA8F45781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CD3F566-B1DB-4C3D-ABFB-140CA8F45781}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CD3F566-B1DB-4C3D-ABFB-140CA8F45781}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CD3F566-B1DB-4C3D-ABFB-140CA8F45781}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B74BF3A-63EE-4411-9D45-72AFD2D014C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B74BF3A-63EE-4411-9D45-72AFD2D014C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B74BF3A-63EE-4411-9D45-72AFD2D014C4}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using TestLibrary;
 
@@ -37,6 +38,7 @@ namespace Server_Designer.ViewModel
             // Server = myServer;
             //  Server.OnMessageReceived += Server_OnMessageSend;
             Server = serverWrapper;
+
             Server.GetGroups += Server_GetGroups;
             Server.GetTests += Server_GetTests;
             Server.ResultSend += Server_ResultSend;
@@ -62,12 +64,21 @@ namespace Server_Designer.ViewModel
 
         private void Server_GetTests(object entity, System.Net.Sockets.TcpClient tcpClient)
         {
-            throw new NotImplementedException();
+            if (entity is int index)
+            {
+              //var tests=  unitOfWork.Tests.GetWithInclude(t => t.Id == index);
+              //tests.
+            }
         }
 
         private void Server_GetGroups(object entity, System.Net.Sockets.TcpClient tcpClient)
         {
-            throw new NotImplementedException();
+            if (entity is User user)
+            {
+                var groups = unitOfWork.Groups.GetWithInclude(x => x.Users.Exists(u => u.Login == user.Login && u.Password == user.Password && u.IsAdmin == user.IsAdmin)).Select(g=>new Group {Name= g.Name,Id=g.Id });
+                
+                Server.SendGroup(groups.ToArray(), tcpClient);
+            }
         }
 
         private void Subscribe()
@@ -82,6 +93,7 @@ namespace Server_Designer.ViewModel
         }
 
         public ObservableCollection<object> Children { get { return _children; } }
+        #region Dispose / closing methods
         protected override void OnDispose()
         {
             unitOfWork.Dispose();
@@ -89,11 +101,11 @@ namespace Server_Designer.ViewModel
             //Server.Dispose();
             base.OnDispose();
         }
-
         internal void OnViewClosing(object sender, CancelEventArgs e)
         {
             Dispose();
         }
+        #endregion
     }
 }
 // public class 

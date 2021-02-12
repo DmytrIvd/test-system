@@ -60,7 +60,7 @@ namespace Client_Testing
             }
         }
 
-        private void GotFullChunks(MessageType messageType, List<Chunk> receivedChunks)
+        private void GotFullChunks(MessageType messageType, List<byte[]> receivedChunks)
         {
             //1. Server send Login Verify
             //2. Server send groups
@@ -69,19 +69,19 @@ namespace Client_Testing
             {
                 case MessageType.ServerLoginVerify:
                     {
-                        var val = CombineChunksInto<bool>(receivedChunks);
+                        var val = receivedChunks.CombineChunksInto<bool>();
                         LoginAnswer?.Invoke(val);
                         break;
                     }
                 case MessageType.ServerSendGroups:
                     {
-                        var val = CombineChunksInto<Group[]>(receivedChunks);
+                        var val = receivedChunks.CombineChunksInto<Group[]>();
                         GotGroups?.Invoke(val);
                         break;
                     }
                 case MessageType.ServerSendTest:
                     {
-                        var val = CombineChunksInto<Test[]>(receivedChunks);
+                        var val = receivedChunks.CombineChunksInto<Test[]>();
                         GotTests?.Invoke(val);
                         break;
                     }
@@ -90,23 +90,7 @@ namespace Client_Testing
             // messageType = null;
         }
 
-        private T CombineChunksInto<T>(List<Chunk> receivedChunks)
-        {
-            var data = receivedChunks.CombineChunks();
-            var obj = data.Deserialize();
-            if (obj is T)
-            {
-                return (T)obj;
-            }
-            try
-            {
-                return (T)Convert.ChangeType(obj, typeof(T));
-            }
-            catch (InvalidCastException)
-            {
-                return default(T);
-            }
-        }
+        
         #endregion
         #region Cleaners
         public void Dispose()

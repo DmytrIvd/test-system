@@ -35,12 +35,14 @@ namespace Networking
 
         public void SendData(byte[] b, MessageType clientMessage)
         {
-            var list = b.DivideByChunks(800);
-            SendImmediate(new TcpHeader { ChunkCount = list.Count, Type = clientMessage }.Serialize());
-            foreach (var c in list)
+            
+            SendImmediate(new TcpHeader { ChunkCount = b.Length, Type = clientMessage }.Serialize());
+            foreach (var ch in b.DivideToChunks(1024))
             {
-                SendImmediate(c.Serialize());
+                AddToPacket(ch);
+                
             }
+            FlushData();
             //throw new NotImplementedException();
         }
 
@@ -74,7 +76,7 @@ namespace Networking
             while (started)
             {
                 bytesRead = 0;
-
+                Array.Clear(buffer.ReadBuffer, 0, buffer.ReadBuffer.Length);
                 try
                 {
                     //Blocks until a message is received from the server
@@ -190,7 +192,8 @@ namespace Networking
                 {
                     // TODO: dispose managed state (managed objects)
                 }
-                tcpClient.Client.Close();
+                if (tcpClient != null)
+                    tcpClient.Client.Close();
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
                 // TODO: set large fields to null
                 disposedValue = true;

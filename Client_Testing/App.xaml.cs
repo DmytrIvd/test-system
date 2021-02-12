@@ -1,15 +1,13 @@
-﻿using Base_MVVM;
-using Client_Testing.View;
+﻿using Client_Testing.View;
 using Networking;
 using Server_Designer.ViewModel;
 using System;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using TestLibrary;
 
 namespace Client_Testing
 {
@@ -23,6 +21,7 @@ namespace Client_Testing
             try
             {
                 Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                Thread.Sleep(20000);
                 ClientWrapper ClientWrapper = new ClientWrapper();
 
                 ClientWrapper.Start("192.168.0.103", 8888);
@@ -52,9 +51,9 @@ namespace Client_Testing
 
 
 
-
+                        MainUserViewModel mainUserViewModel = new MainUserViewModel(loginViewModel.User,ClientWrapper);
                         MainUserForm mainUserForm = new MainUserForm();
-                        
+                        mainUserForm.DataContext = mainUserViewModel;
                         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                         Current.MainWindow = mainUserForm;
                         mainUserForm.Show();
@@ -75,23 +74,5 @@ namespace Client_Testing
 
 
     }
-    public class MainUserViewModel:ViewModelBase{
-        ObservableCollection<object> _children;
-        private User user;
 
-        public User User{
-            get => user;
-            set{
-                user = value;
-                OnPropertyChanged("User");
-            }
-        }
-
-        public ClientWrapper Client { get; private set; }
-
-        public MainUserViewModel(ClientWrapper wrapper){
-            Client = wrapper;
-        }
-    }
-   
 }

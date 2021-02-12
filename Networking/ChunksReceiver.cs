@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
-
+using TestLibrary;
 namespace Networking
 {
     public class ChunksReceiver
     {
-        public event GotAllChunks GotAll;
-        public List<Chunk> Chunks = new List<Chunk>();
+        public List<byte[]> Chunks = new List<byte[]>();
         private bool GotHeader;
         public MessageType MessageType;
         private int chunkCount;
         public bool ReceiveAll;
         public void ReceiveBytes(byte[] arr)
         {
-            var obj = arr.Deserialize();
+            
             //var obj = data.Deserialize();
             if (!GotHeader)
             {
+                var obj = arr.Deserialize();
                 var h = obj as TcpHeader;
                 chunkCount = h.ChunkCount;
                 GotHeader = true;
@@ -25,10 +25,10 @@ namespace Networking
             }
             if (chunkCount != 0)
             {
-                var c = obj as Chunk;
-                Chunks.Add(c);
-                chunkCount--;
-                if (c.IsEnd)
+               
+                Chunks.Add(arr);
+                chunkCount-=arr.Length;
+                if (chunkCount==0)
                 {
                     ReceiveAll = true;
                     //GotFullChunks(MessageType, ReceivedChunks);
