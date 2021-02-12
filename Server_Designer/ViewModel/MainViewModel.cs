@@ -11,10 +11,14 @@ namespace Server_Designer.ViewModel
 {
     public class MainViewModel : Base_MVVM.ViewModelBase, IDisposable
     {
-       //public MyServer Server { get; private set; }
+        public ServerWrapper Server { get; private set; }
+
+        //public MyServer Server { get; private set; }
 
         private UnitOfWork unitOfWork;
-
+        /// <summary>
+        /// Logined User
+        /// </summary>
         public User User
         {
             get => user;
@@ -28,43 +32,43 @@ namespace Server_Designer.ViewModel
         ObservableCollection<object> _children;
         private User user;
 
-        public MainViewModel(UnitOfWork unitOfWork, TestLibrary.User user)
+        public MainViewModel(UnitOfWork unitOfWork, TestLibrary.User user, ServerWrapper serverWrapper)
         {
-           // Server = myServer;
-          //  Server.OnMessageReceived += Server_OnMessageSend;
+            // Server = myServer;
+            //  Server.OnMessageReceived += Server_OnMessageSend;
+            Server = serverWrapper;
+            Server.GetGroups += Server_GetGroups;
+            Server.GetTests += Server_GetTests;
+            Server.ResultSend += Server_ResultSend;
+
             this.unitOfWork = unitOfWork;
             User = user;
             _children = new ObservableCollection<object>();
 
+            //User-Admins redactor
             _children.Add(new UsersViewModel(unitOfWork.Users));
+            //Users-Groups-Tests redactor
             _children.Add(new GroupUsersViewModel(unitOfWork.Users, unitOfWork.Groups, unitOfWork.Tests));
+            //Tests-Groups-Questions-Variants redactor
             _children.Add(new TestUsersViewModel(unitOfWork.Tests, unitOfWork.Groups, unitOfWork.Questions, unitOfWork.Variants));
             Subscribe();
 
         }
 
-        //private void Server_OnMessageSend(Message message)
-        //{
-        //    BinaryFormatter binaryFormatter = new BinaryFormatter();
-        //    switch (message.Type)
-        //    {
-        //        case MessageType.VerifyLoginCommand:
-        //            {
-        //                HandleLogin(message.data,binaryFormatter);
-        //                break;
-        //            }
-        //    }
-        //}
+        private void Server_ResultSend(Result result, System.Net.Sockets.TcpClient tcpClient)
+        {
+            throw new NotImplementedException();
+        }
 
-        //private void HandleLogin(byte[] data,BinaryFormatter binaryFormatter)
-        //{
-        //    using (MemoryStream ms = new MemoryStream(data))
-        //    {
-        //        Func<User, bool> func =  binaryFormatter.Deserialize(ms) as Func<User, bool> func;
-               
-        //    }
-           
-        //}
+        private void Server_GetTests(object entity, System.Net.Sockets.TcpClient tcpClient)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Server_GetGroups(object entity, System.Net.Sockets.TcpClient tcpClient)
+        {
+            throw new NotImplementedException();
+        }
 
         private void Subscribe()
         {
@@ -81,6 +85,7 @@ namespace Server_Designer.ViewModel
         protected override void OnDispose()
         {
             unitOfWork.Dispose();
+            Server.Dispose();
             //Server.Dispose();
             base.OnDispose();
         }

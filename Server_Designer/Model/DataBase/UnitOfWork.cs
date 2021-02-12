@@ -1,12 +1,17 @@
-﻿using System;
+﻿using Server_Designer.ViewModel;
+using System;
 using System.Linq;
+using System.Net.Sockets;
 using TestLibrary;
 
 namespace Server_Designer.Model
 {
+    public delegate void LoginAnswerForClient(bool answer, TcpClient forWho);
     public class UnitOfWork : IDisposable
     {
-        public EventHandler VerifyLogin;
+        // public
+        public LoginAnswerForClient VerifyClientLogin;
+        public LoginAnswer VerifyLogin;
         private ExamContext examContext = new ExamContext();
         private EFGenericRepository<User> users;
         private EFGenericRepository<Group> groups;
@@ -33,12 +38,17 @@ namespace Server_Designer.Model
             }
         }
 
-        public void Login(object sender, Func<User, bool> e)
+        public void Login(User user)
         {
        
-            var user = Users.GetWithInclude(e);
+            var users = Users.GetWithInclude(u=>u.IsAdmin==user.IsAdmin&&u.Login==user.Login&&u.Password==user.Password);
             
-            VerifyLogin?.Invoke(user.Count() != 0, EventArgs.Empty);
+            VerifyLogin?.Invoke(users.Count() != 0);
+        }
+        public void LoginClient(User user,TcpClient tcpClient){
+            var users = Users.GetWithInclude(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
+
+           VerifyClientLogin?.Invoke(users.Count() != 0,tcpClient);
         }
 
         public EFGenericRepository<Group> Groups

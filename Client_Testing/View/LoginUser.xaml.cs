@@ -28,7 +28,11 @@ namespace Client_Testing.View
 
         internal void ButtonClicked(object sender, EventArgs e)
         {
-            DialogResult = (bool)sender; 
+            this.Dispatcher.Invoke(() =>
+            {
+                DialogResult = (bool)sender;
+            });
+           
         }
     }
 }

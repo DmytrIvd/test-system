@@ -59,6 +59,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientWrapper.cs" />
     <Compile Include="View\LoginUser.xaml.cs">
       <DependentUpon>LoginUser.xaml</DependentUpon>
     </Compile>
@@ -114,6 +115,10 @@
     <ProjectReference Include="..\Networking\Networking.csproj">
       <Project>{9B74BF3A-63EE-4411-9D45-72AFD2D014C4}</Project>
       <Name>Networking</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestLibrary\TestLibrary.csproj">
+      <Project>{ABFA5365-85F1-4D12-9AD8-BDC72510F9DC}</Project>
+      <Name>TestLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

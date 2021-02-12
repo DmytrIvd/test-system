@@ -1,13 +1,13 @@
 ﻿using Server_Designer.Model;
 using Server_Designer.View;
 using Server_Designer.ViewModel;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows;
+using TestLibrary;
 
 namespace Server_Designer
 {
@@ -24,45 +24,47 @@ namespace Server_Designer
             LoginForm loginForm = new LoginForm();
 
             LoginViewModel loginViewModel = new LoginViewModel();
+
+            //For receiving message that indicates is if login data valid
             unitOfWork.VerifyLogin += loginViewModel.LoginCallBack;
-
+            //To close a form from view model
             loginViewModel.CloseForm += loginForm.ButtonClicked;
-
+            //Send login to check if it exists
             loginViewModel.LoginTry += unitOfWork.Login;
-            
+
             loginForm.DataContext = loginViewModel;
+
             ServerMain serverMain = new ServerMain();
+
             if (loginForm.ShowDialog() == true)
             {
-            //Start the server
+                ServerWrapper serverWrapper = new ServerWrapper();
+                serverWrapper.LogTry += unitOfWork.LoginClient;
+                unitOfWork.VerifyClientLogin += serverWrapper.SendLoginAnswer;
 
-                MainViewModel mainViewModel = new MainViewModel(unitOfWork,loginViewModel.User);
+                //Start the server
+                serverWrapper.Start(8888);
+
+
+                MainViewModel mainViewModel = new MainViewModel(unitOfWork, loginViewModel.User,serverWrapper);
                 serverMain.DataContext = mainViewModel;
-                serverMain.Closing +=mainViewModel.OnViewClosing;
+                //To dispose the view model when close view
+                serverMain.Closing += mainViewModel.OnViewClosing;
+
                 Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                 Current.MainWindow = serverMain;
-               
+
                 serverMain.Show();
-                
+
             }
-            else{
+            else
+            {
                 Current.Shutdown(-1);
             }
-           
-           
 
-           
-            //LoginViewModel loginViewModel = new LoginViewModel();
-
-            //show your MainWindow
         }
-        protected override void OnStartup(StartupEventArgs e)
-        {
 
-            //ServerMain serverMain = new ServerMain();
-            //serverMain.Show();
-            base.OnStartup(e);
-        }
-       
     }
+    public delegate void LoginTryForClient(User user, TcpClient client);
 }
+

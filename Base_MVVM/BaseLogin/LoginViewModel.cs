@@ -11,11 +11,13 @@ using TestLibrary;
 
 namespace Server_Designer.ViewModel
 {
+    public delegate void LoginTry(User user);
+    public delegate void LoginAnswer(bool answerFromServer);
     public class LoginViewModel : ViewModelBase
     {
         bool Mode;
         public event EventHandler CloseForm;
-        public event EventHandler<Func<User, bool>> LoginTry;
+        public event LoginTry LoginTry;
         public LoginViewModel(bool IsAdmin=true)
         {
 
@@ -61,25 +63,24 @@ namespace Server_Designer.ViewModel
             var pb = obj as PasswordBox;
            
             var expression = new Func<User, bool>(u => u.Password == pb.Password && u.Login == LoginStr&&u.IsAdmin==Mode);
-            User = new User { Password = pb.Password, Login = LoginStr};
-            LoginTry?.Invoke(this, expression);
+            User = new User { Password = pb.Password, Login = LoginStr,IsAdmin=Mode};
+            LoginTry?.Invoke(User);
 
 
 
 
         }
 
-        public void LoginCallBack(object obj,EventArgs args)
+        public void LoginCallBack(bool answer)
         {
-            if (obj is bool val)
-            {
-                if (val)
+           
+                if (answer)
                 {
-                    CloseForm?.Invoke(val,EventArgs.Empty);
+                    CloseForm?.Invoke(answer,EventArgs.Empty);
                     return;
                 }
-            }
-            MessageBox.Show("This admin does not exist");
+            
+            MessageBox.Show("This user does not exist");
         }
 
         private void ExecCancelCommand(object obj)

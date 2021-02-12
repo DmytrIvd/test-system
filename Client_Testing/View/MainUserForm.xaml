@@ -7,13 +7,22 @@
         mc:Ignorable="d"
         Title="MainUserForm" Height="450" Width="800">
     <Grid>
-        <TabControl Margin="0" TabStripPlacement="Left">
+        <TabControl  Margin="0" TabStripPlacement="Left">
             <TabItem Header="User">
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem Header="UserTests">
+            <TabItem Header="UserTests" DataContext="{Binding Children[1]}">
                 <Grid Background="#FFE5E5E5">
-                    <ListBox Height="177" Margin="10,10,306,0" VerticalAlignment="Top"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="102*"/>
+                        <ColumnDefinition Width="79*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="372*"/>
+                        <RowDefinition Height="43*"/>
+                    </Grid.RowDefinitions>
+                    <ListBox ItemsSource="{Binding Groups}" Margin="0,0,1,0.2"/>
+                    <Button Content="Refresh" Command="{Binding Refresh}" FontSize="20" BorderBrush="Black" BorderThickness="2" Margin="0,371,1,0.4" Grid.RowSpan="2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Statistics">

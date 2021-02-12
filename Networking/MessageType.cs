@@ -1,8 +1,13 @@
 ﻿namespace Networking
 {
-    public enum MessageType{
-        ServerLoginRequest,
+    public enum MessageType
+    {
         ClientLoginTry,
-        ServerLoginVerify
+        ServerLoginVerify,
+        ClientRequestGroups,
+        ServerSendGroups,
+        ClientRequestTest,
+        ServerSendTest,
+        ClientSendResult
     }
 }
