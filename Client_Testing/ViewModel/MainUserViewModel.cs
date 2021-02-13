@@ -21,9 +21,7 @@ namespace Client_Testing
                 OnPropertyChanged("User");
             }
         }
-        public void UpdateTheView(Action action){
-            View?.Invoke(action);
-        }
+       
         public ClientWrapper Client { get; private set; }
 
         public MainUserViewModel(User user,ClientWrapper wrapper)
@@ -42,8 +40,8 @@ namespace Client_Testing
         private void Subscribe(GroupTestsViewModel groupTestsViewModel)
         {
             Client.GotGroups += groupTestsViewModel.RefreshGroups;
-            Client.GotTests += groupTestsViewModel.RefreshTests;
-            groupTestsViewModel.MainViewModel += UpdateTheView;
+            Client.GotTests += groupTestsViewModel.LoadTests;
+
         }
 
         protected override void OnDispose()

@@ -6,7 +6,7 @@
         ServerLoginVerify,
         ClientRequestGroups,
         ServerSendGroups,
-        ClientRequestTest,
+        ClientRequestTests,
         ServerSendTest,
         ClientSendResult
     }

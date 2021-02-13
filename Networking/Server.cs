@@ -109,7 +109,7 @@ namespace Networking
                     }
                     TcpClient client = listener.AcceptTcpClient();
                     Thread clientThread = new Thread(new ParameterizedThreadStart(WorkWithClient));
-                    Console.WriteLine("New client connected");
+                    Console.WriteLine("New client connected"+client.Client.AddressFamily.ToString());
 
                     NetworkBuffer newBuff = new NetworkBuffer();
                     newBuff.WriteBuffer = new byte[sendBufferSize];

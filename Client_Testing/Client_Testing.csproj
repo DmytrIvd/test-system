@@ -76,9 +76,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClientWrapper.cs" />
-    <Compile Include="GroupTestsViewModel.cs" />
-    <Compile Include="MainUserViewModel.cs" />
+    <Compile Include="Model\ClientWrapper.cs" />
+    <Compile Include="ViewModel\GroupTestsViewModel.cs" />
+    <Compile Include="ViewModel\GroupViewModel.cs" />
+    <Compile Include="ViewModel\MainUserViewModel.cs" />
+    <Compile Include="ViewModel\TestViewModel.cs" />
     <Compile Include="View\LoginUser.xaml.cs">
       <DependentUpon>LoginUser.xaml</DependentUpon>
     </Compile>
@@ -123,10 +125,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="ViewModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Base_MVVM\Base_MVVM.csproj">
       <Project>{CBA1699B-9CF9-4C5B-BD69-05FBCF0C3B03}</Project>

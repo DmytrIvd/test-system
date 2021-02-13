@@ -89,7 +89,6 @@ namespace Server_Designer.Model
             var query = Include(includeProperties);
             return query.Where(predicate).ToList();
         }
-
         private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = _dbSet.AsNoTracking();

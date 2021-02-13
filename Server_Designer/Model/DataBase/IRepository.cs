@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
@@ -20,7 +21,8 @@ namespace Server_Designer.Model
     IEnumerable<object> availableSet, // Lookup collection
     string propertyName);
         IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
-    IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,
-            params Expression<Func<TEntity, object>>[] includeProperties);
-        }
+        IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,
+                params Expression<Func<TEntity, object>>[] includeProperties);
+        IList CreateList(Type type);
+    }
 }

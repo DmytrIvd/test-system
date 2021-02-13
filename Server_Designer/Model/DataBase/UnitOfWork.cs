@@ -40,18 +40,24 @@ namespace Server_Designer.Model
 
         public void Login(User user)
         {
-           var users= Users.Get(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
+                     // var users= Users.Get(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
           //  var users = Users.GetWithInclude();
 
-            VerifyLogin?.Invoke(users.Count() != 0);
+            VerifyLogin?.Invoke(AnyUser(user));
+        }
+        private bool AnyUser(User user){
+            return  examContext.Users.Any(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
+
         }
         public void LoginClient(User user, TcpClient tcpClient)
         {
-            var users = Users.GetWithInclude(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
 
-            VerifyClientLogin?.Invoke(users.Count() != 0, tcpClient);
+            VerifyClientLogin?.Invoke(AnyUser(user), tcpClient);
         }
-
+        /// <summary>
+        /// Very delicate method
+        /// </summary>
+       
         public EFGenericRepository<Group> Groups
         {
             get

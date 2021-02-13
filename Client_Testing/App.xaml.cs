@@ -65,12 +65,14 @@ namespace Client_Testing
 
 
                 }
-                Current.Shutdown(-1);
+                
             }
             catch (Exception exe)
             {
                 MessageBox.Show(exe.Message);
+
             }
+            Current.Shutdown(-1);
         }
 
 

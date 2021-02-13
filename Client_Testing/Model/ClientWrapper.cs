@@ -39,7 +39,7 @@ namespace Client_Testing
         }
         public void SendTestsRequest(int groupId)
         {
-            client.SendData(groupId.Serialize(), MessageType.ClientRequestTest);
+            client.SendData(groupId.Serialize(), MessageType.ClientRequestTests);
         }
         public void SendTestResult(Result result)
         {

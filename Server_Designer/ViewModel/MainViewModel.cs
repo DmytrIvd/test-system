@@ -66,8 +66,8 @@ namespace Server_Designer.ViewModel
         {
             if (entity is int index)
             {
-              //var tests=  unitOfWork.Tests.GetWithInclude(t => t.Id == index);
-              //tests.
+                var tests = unitOfWork.Tests.GetWithInclude((t)=>t.Id==index,(t)=>t.Questions.Select(q=>q.Variants));
+                Server.SendTests(tests.ToArray(), tcpClient);
             }
         }
 

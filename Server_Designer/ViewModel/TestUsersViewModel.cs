@@ -247,6 +247,7 @@ namespace Server_Designer.ViewModel
         private void AddToRepos(Variant variant)
         {
             VariantRepo.Create(variant);
+            SaveAll();
         }
         private void AddToRepos(Question question)
         {
@@ -262,6 +263,7 @@ namespace Server_Designer.ViewModel
         }
         private void AddToRepos(Test test)
         {
+        
             TestsRepo.Create(test);
             SaveAll();
            var id= TestsRepo.Get(t => t.Title == test.Title ).First().Id;
@@ -270,7 +272,7 @@ namespace Server_Designer.ViewModel
                 q.Test.Id = id;
                 AddToRepos(q);
             }
-            SaveAll();
+           // SaveAll();
             RefreshExec(null);
            
         }

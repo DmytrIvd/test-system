@@ -23,7 +23,8 @@ namespace Server_Designer
             //server.OnDataReceived += Client_OnDataReceived;
             server.Start();
         }
-        public void Stop(){
+        public void Stop()
+        {
             server.Stop();
         }
 
@@ -38,10 +39,12 @@ namespace Server_Designer
         {
             server.SendData(answer.Serialize(), MessageType.ServerLoginVerify, Towhere);
         }
-        public void SendGroup(Group[] groups,TcpClient Towhere){
-            server.SendData(groups.Serialize(), MessageType.ServerSendGroups,Towhere);
+        public void SendGroup(Group[] groups, TcpClient Towhere)
+        {
+            server.SendData(groups.Serialize(), MessageType.ServerSendGroups, Towhere);
         }
-        public void SendTests(Test[] tests,TcpClient Towhere){
+        public void SendTests(Test[] tests, TcpClient Towhere)
+        {
             server.SendData(tests.Serialize(), MessageType.ServerSendTest, Towhere);
         }
         #endregion
@@ -86,9 +89,11 @@ namespace Server_Designer
                         GetGroups?.Invoke(val, client);
                         break;
                     }
-                case MessageType.ClientRequestTest:
+                case MessageType.ClientRequestTests:
                     {
-                        var val = receivedChunks.CombineChunksInto<Test>();
+
+                        //Group id
+                        var val = receivedChunks.CombineChunksInto<int>();
                         GetTests?.Invoke(val, client);
                         break;
                     }
@@ -102,7 +107,7 @@ namespace Server_Designer
             }
         }
 
-       
+
         #endregion
         #region Cleaners
         public void Dispose()

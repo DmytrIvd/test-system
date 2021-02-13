@@ -114,15 +114,15 @@ namespace Server_Designer.ViewModel
             var g = obj as Group;
 
             //Delete all keys from users
-            if (g.Tests != null)
-                g.Tests.Clear();
-            groupsRepo.Update(gr => gr.Id == Group.Id, Group.Tests, testsRepo.Get(), "Tests");
-            SaveAll();
+            //if (g.Tests != null)
+            //    g.Tests.Clear();
+            //groupsRepo.Update(gr => gr.Id == g.Id, g.Tests, testsRepo.Get(), "Tests");
+            //SaveAll();
 
-            if (g.Users != null)
-                g.Users.Clear();
-            groupsRepo.Update(gr => gr.Id == Group.Id, Group.Users, usersRepo.Get(), "Users");
-           
+           // if (g.Users != null)
+              //  g.Users.Clear();
+            //groupsRepo.Update(gr => gr.Id == g.Id, g.Users, usersRepo.Get(), "Users");
+            SaveAll();
             groupsRepo.Remove(g);
             SaveAll();
 
