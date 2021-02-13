@@ -5,12 +5,13 @@ using TestLibrary;
 
 namespace Client_Testing
 {
+    public delegate void Update(Action action);
     public class MainUserViewModel : ViewModelBase
     {
         public ObservableCollection<object> Children { get { return _children; } }
         ObservableCollection<object> _children;
         private User user;
-
+        public Update View;
         public User User
         {
             get => user;
@@ -20,7 +21,9 @@ namespace Client_Testing
                 OnPropertyChanged("User");
             }
         }
-
+        public void UpdateTheView(Action action){
+            View?.Invoke(action);
+        }
         public ClientWrapper Client { get; private set; }
 
         public MainUserViewModel(User user,ClientWrapper wrapper)
@@ -32,7 +35,7 @@ namespace Client_Testing
             _children = new ObservableCollection<object>();
             GroupTestsViewModel groupTestsViewModel = new GroupTestsViewModel(User,Client);
             Subscribe(groupTestsViewModel);
-            _children.Add(new GroupTestsViewModel(User,Client));
+            _children.Add(groupTestsViewModel);
 
         }
 
@@ -40,6 +43,7 @@ namespace Client_Testing
         {
             Client.GotGroups += groupTestsViewModel.RefreshGroups;
             Client.GotTests += groupTestsViewModel.RefreshTests;
+            groupTestsViewModel.MainViewModel += UpdateTheView;
         }
 
         protected override void OnDispose()

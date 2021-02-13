@@ -22,13 +22,13 @@ namespace Server_Designer.Model
 
 
 
-            modelBuilder.Entity<Group>().Property(g => g.Name).HasMaxLength(15).IsRequired();
+            modelBuilder.Entity<Group>().Property(g => g.Name).HasMaxLength(15).HasColumnType("varchar").IsRequired();
 
             modelBuilder.Entity<Test>().Property(t => t.Author).HasMaxLength(30).IsRequired();
-            modelBuilder.Entity<Test>().Property(t => t.Title).HasMaxLength(30).IsRequired();
+            modelBuilder.Entity<Test>().Property(t => t.Title).HasMaxLength(30).HasColumnType("varchar").IsRequired();
 
-            modelBuilder.Entity<User>().Property(u => u.Login).HasMaxLength(20).IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.Password).HasMaxLength(20).IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.Login).HasMaxLength(20).HasColumnType("varchar").IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.Password).HasMaxLength(20).HasColumnType("varchar").IsRequired();
 
             modelBuilder.Entity<Variant>().Property(v => v.Variant_str).HasMaxLength(30).IsRequired();
 

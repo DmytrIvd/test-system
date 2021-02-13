@@ -19,6 +19,10 @@ namespace Client_Testing.View
     /// </summary>
     public partial class MainUserForm : Window
     {
+        public void UpdateAThread(Action action)
+        {
+            this.Dispatcher.Invoke(action);
+        }
         public MainUserForm()
         {
             InitializeComponent();

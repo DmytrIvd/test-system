@@ -53,6 +53,7 @@ namespace Client_Testing
 
                         MainUserViewModel mainUserViewModel = new MainUserViewModel(loginViewModel.User,ClientWrapper);
                         MainUserForm mainUserForm = new MainUserForm();
+                        mainUserViewModel.View += mainUserForm.UpdateAThread;
                         mainUserForm.DataContext = mainUserViewModel;
                         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                         Current.MainWindow = mainUserForm;

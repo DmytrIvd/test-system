@@ -1,31 +1,64 @@
 ﻿using Base_MVVM;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using TestLibrary;
 
 namespace Client_Testing
 {
     public class GroupTestsViewModel : ViewModelBase
     {
-        public ObservableCollection<Group> Groups { get => groups; set { groups = value; OnPropertyChanged("Groups"); } }
+        public ObservableCollection<Group> Groups { get; set; }
         public ObservableCollection<Test> Tests { get; set; }
         public ClientWrapper Wrapper;
         public User Login { get; }
-
+        public Update MainViewModel;
         public GroupTestsViewModel(User login, ClientWrapper clientWrapper)
         {
             Login = login;
             Wrapper = clientWrapper;
-            Groups = new ObservableCollection<Group>();
+            Groups =new ObservableCollection<Group>();
+            Tests = new ObservableCollection<Test>();
 
         }
         public void RefreshGroups(Group[] groups)
         {
-            Groups.Clear();
-            foreach (var g in groups)
+            //Dispatcher dispatcher = Application.Current.Dispatcher;
+
+
+            //    if (!dispatcher.CheckAccess())
+            //    {
+            //        dispatcher.BeginInvoke((Action)(() =>
+            //                                            {
+            //                                                // put code for the dispatched here
+            //                                            }));
+            //    }
+            //    else
+            //    {
+            //        // put code for the dispatched here
+            //    }
+            //// MainViewModel?.Invoke(new Action(()=>
+            //  {
+            //      Groups.Clear();
+            //      foreach (var g in groups)
+            //      {
+            //          Groups.Add(g);
+            //      }
+            //  }));
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                Groups.Add(g);
-            }
+                Groups.Clear();
+
+                foreach (var g in groups)
+                {
+                    Groups.Add(g);
+                }
+
+            });
+           
+
         }
 
         public void RefreshTests(Test[] tests)
@@ -37,7 +70,6 @@ namespace Client_Testing
         }
 
         private ICommand refreshcommand;
-        private ObservableCollection<Group> groups;
 
         public ICommand Refresh
         {
@@ -51,6 +83,7 @@ namespace Client_Testing
 
         private void ExecRefresh(object obj)
         {
+            var val = Groups.Count;
             Wrapper?.SendGroupsRequest(Login);
         }
     }
