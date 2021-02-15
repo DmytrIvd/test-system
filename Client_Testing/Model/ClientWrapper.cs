@@ -69,7 +69,7 @@ namespace Client_Testing
             {
                 case MessageType.ServerLoginVerify:
                     {
-                        var val = receivedChunks.CombineChunksInto<bool>();
+                        var val = receivedChunks.CombineChunksInto<int>();
                         LoginAnswer?.Invoke(val);
                         break;
                     }

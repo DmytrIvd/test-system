@@ -67,6 +67,7 @@ namespace Server_Designer.ViewModel
                 // var attachedGroup=   groupsRepo.FindById(Group.Id);
                 //attachedGroup.Users.Add(User);
                 Test.Groups.Add(Group);
+                SaveAll();
                 // User.Groups.Add(Group);
                 TestsRepo.Update(t => t.Id == Test.Id, Test.Groups, GroupsRepo.Get(), "Groups");
                 // groupsRepo.Update(g => g.Id == Group.Id, Group.Users, usersRepo.Get(), "Users");
@@ -77,9 +78,9 @@ namespace Server_Designer.ViewModel
         }
         private bool CanExecAddRelationship(object arg)
         {
-           
-                return Group != null && Test != null && !IsTestAndGroupHaveRelationships();
-           
+
+            return Group != null && Test != null && !IsTestAndGroupHaveRelationships();
+
         }
 
         public ICommand DropRelationship
@@ -111,11 +112,12 @@ namespace Server_Designer.ViewModel
         private void ExecDropRelationship(object obj)
         {
             Test.Groups.RemoveAll(u => u.Id == Group.Id);
-            TestsRepo.Update(t => t.Id == Test.Id, Test.Groups,GroupsRepo.Get(), "Groups");
+            SaveAll();
+            TestsRepo.Update(t => t.Id == Test.Id, Test.Groups, GroupsRepo.Get(), "Groups");
             SaveAll();
             ChangeProperties(Test);
         }
-        private Group group{ get; set; }
+        private Group group { get; set; }
         #region TestProperties
         private int Id { get; set; }
         public string Title
@@ -130,12 +132,15 @@ namespace Server_Designer.ViewModel
         #endregion
         public Test Test { get => test; set { test = value; ChangeProperties(value); OnPropertyChanged("Test"); } }
         public Group Group { get => group; set { group = value; OnPropertyChanged("Group"); } }
+
         public IRepository<Test> TestsRepo { get; }
         public IRepository<Group> GroupsRepo { get; }
         public IRepository<Question> QuestionsRepo { get; }
         public IRepository<Variant> VariantRepo { get; }
+
         public ObservableCollection<Group> Groups { get; set; }
         public ObservableCollection<Test> Tests { get; set; }
+
         private void ExecSelect(object obj)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -157,7 +162,7 @@ namespace Server_Designer.ViewModel
         protected override void ClearProperties()
         {
             Id = 0;
-            Title= null;
+            Title = null;
             TestGroups.Clear();
         }
 
@@ -167,7 +172,7 @@ namespace Server_Designer.ViewModel
             if (obj != null && obj is Test test)
             {
                 Id = test.Id;
-               Title = test.Title;
+                Title = test.Title;
                 foreach (var g in test.Groups)
                 {
                     TestGroups.Add(g);
@@ -182,7 +187,7 @@ namespace Server_Designer.ViewModel
 
         protected override bool CanDeleteExec(object obj)
         {
-            throw new NotImplementedException();
+            return Id > 0;
         }
 
         protected override bool CanSaveExec(object arg)
@@ -194,7 +199,22 @@ namespace Server_Designer.ViewModel
 
         protected override void DeleteExec(object obj)
         {
-            throw new NotImplementedException();
+            var Test = obj as Test;
+            
+            while (Test.Questions.Count!=0)
+            {
+                var q = Test.Questions.First();
+                while(q.Variants.Count!=0)
+                {
+                    var v = q.Variants.First();
+                    VariantRepo.Remove(v);
+
+                }
+                QuestionsRepo.Remove(q);
+            }
+            TestsRepo.Remove(Test);
+            SaveAll();
+            RefreshExec(null);
         }
 
         protected override void RefreshExec(object obj)
@@ -203,7 +223,7 @@ namespace Server_Designer.ViewModel
             Tests.Clear();
             try
             {
-                var tests = TestsRepo.Get();
+                var tests = TestsRepo.GetWithInclude(t=>t.Questions.Select(q=>q.Variants));
                 foreach (var u in tests)
                 {
                     Tests.Add(u);
@@ -238,43 +258,21 @@ namespace Server_Designer.ViewModel
                     AddToRepos(test);
                 }
             }
-            catch(Exception exe)
+            catch (Exception exe)
             {
-                MessageBox.Show(exe.ToString());
+                MessageBox.Show(exe.InnerException.Message);
                 return;
             }
         }
-        private void AddToRepos(Variant variant)
-        {
-            VariantRepo.Create(variant);
-            SaveAll();
-        }
-        private void AddToRepos(Question question)
-        {
-            QuestionsRepo.Create(question);
-            SaveAll();
-            var id = QuestionsRepo.Get(q => q.Question_str == question.Question_str).First().Id;
-            foreach (var v in question.Variants)
-            {
-                v.Question.Id = id;
-                AddToRepos(v);
-            }
-           
-        }
+
         private void AddToRepos(Test test)
         {
-        
+
             TestsRepo.Create(test);
             SaveAll();
-           var id= TestsRepo.Get(t => t.Title == test.Title ).First().Id;
-            foreach (var q in test.Questions)
-            {
-                q.Test.Id = id;
-                AddToRepos(q);
-            }
-           // SaveAll();
+
             RefreshExec(null);
-           
+
         }
     }
 }

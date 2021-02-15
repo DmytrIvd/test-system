@@ -80,7 +80,7 @@ namespace Server_Designer.Model
 
         public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            return Include(includeProperties).ToList();
+            return Include(includeProperties).AsNoTracking().ToList();
         }
 
         public IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,

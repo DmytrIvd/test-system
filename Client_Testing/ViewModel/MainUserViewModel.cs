@@ -5,13 +5,11 @@ using TestLibrary;
 
 namespace Client_Testing
 {
-    public delegate void Update(Action action);
     public class MainUserViewModel : ViewModelBase
     {
         public ObservableCollection<object> Children { get { return _children; } }
         ObservableCollection<object> _children;
         private User user;
-        public Update View;
         public User User
         {
             get => user;
@@ -21,17 +19,18 @@ namespace Client_Testing
                 OnPropertyChanged("User");
             }
         }
-       
+
         public ClientWrapper Client { get; private set; }
 
-        public MainUserViewModel(User user,ClientWrapper wrapper)
+        public MainUserViewModel(User user, ClientWrapper wrapper)
         {
-          this.user = user; ;
+            this.user = user; ;
             Client = wrapper;
 
             //Client.GotGroups += Client_GotGroups;
             _children = new ObservableCollection<object>();
-            GroupTestsViewModel groupTestsViewModel = new GroupTestsViewModel(User,Client);
+            GroupTestsViewModel groupTestsViewModel = new GroupTestsViewModel(User, Client);
+           // groupTestsViewModel.
             Subscribe(groupTestsViewModel);
             _children.Add(groupTestsViewModel);
 

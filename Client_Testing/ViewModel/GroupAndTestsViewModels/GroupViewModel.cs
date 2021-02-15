@@ -6,10 +6,11 @@ using TestLibrary;
 
 namespace Client_Testing
 {
+    public delegate void ExamStartGroup(Test test, Group group);
     public class GroupViewModel : ViewModelBase
     {
         private bool _isExpanded;
-
+        public event ExamStartGroup ExamStart_RoutedToMainModel;
         public GroupViewModel(Group group)
         {
             Group = group;
@@ -25,13 +26,22 @@ namespace Client_Testing
                 Tests.Clear();
                 foreach (var t in tests)
                 {
-                    Tests.Add(new TestViewModel(t));
+                    var tVM = new TestViewModel(t);
+                    tVM.ExamStarter += RouteToMainModel;
+                    Tests.Add(tVM);
+
                 }
             });
         }
-        public bool IsExpanded{
+        public void RouteToMainModel(Test test)
+        {
+            ExamStart_RoutedToMainModel?.Invoke(test,Group);
+        }
+        public bool IsExpanded
+        {
             get => _isExpanded;
-            set{
+            set
+            {
                 _isExpanded = value;
                 RequestTests?.Invoke(Id);
                 OnPropertyChanged("IsExpanded");

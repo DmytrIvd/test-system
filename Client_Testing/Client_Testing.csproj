@@ -77,15 +77,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\ClientWrapper.cs" />
-    <Compile Include="ViewModel\GroupTestsViewModel.cs" />
-    <Compile Include="ViewModel\GroupViewModel.cs" />
+    <Compile Include="ViewModel\TestPassingViewModels\AnswerViewModel.cs" />
+    <Compile Include="ViewModel\GroupAndTestsViewModels\GroupTestsViewModel.cs" />
+    <Compile Include="ViewModel\GroupAndTestsViewModels\GroupViewModel.cs" />
     <Compile Include="ViewModel\MainUserViewModel.cs" />
-    <Compile Include="ViewModel\TestViewModel.cs" />
+    <Compile Include="ViewModel\GroupAndTestsViewModels\TestViewModel.cs" />
+    <Compile Include="ViewModel\TestPassingViewModels\QuestionViewModel.cs" />
+    <Compile Include="ViewModel\TestPassingViewModels\TestingViewModel.cs" />
     <Compile Include="View\LoginUser.xaml.cs">
       <DependentUpon>LoginUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainUserForm.xaml.cs">
       <DependentUpon>MainUserForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TestingWindow.xaml.cs">
+      <DependentUpon>TestingWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +127,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MainUserForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TestingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -143,11 +143,12 @@ namespace Server_Designer.ViewModel
         {
             if (PropertiesIsNotNull())
             {
-               var u= usersRepo.GetWithInclude(x => x.Login == Login && x.Password == Password);
+               var u= usersRepo.GetWithInclude(x => x.Login == Login && x.Password == Password&&x.IsAdmin==IsAdmin);
                 if (u .Count()==0)
                 {
                     if (Id == 0)
                     {
+                   
                         usersRepo.Create(new User { IsAdmin = IsAdmin, Login = Login, Password = Password });
                     }
                     else

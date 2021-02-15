@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TestLibrary;
+using Client_Testing.View;
+using Client_Testing.ViewModel;
 
 namespace Client_Testing
 {
@@ -13,7 +15,6 @@ namespace Client_Testing
         public ObservableCollection<GroupViewModel> Groups { get; set; }
         public ClientWrapper Wrapper;
         public User Login { get; }
-        public Update MainViewModel;
         public GroupTestsViewModel(User login, ClientWrapper clientWrapper)
         {
             Login = login;
@@ -21,6 +22,7 @@ namespace Client_Testing
             Groups = new ObservableCollection<GroupViewModel>();
 
         }
+
         public void RefreshGroups(Group[] groups)
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -31,6 +33,7 @@ namespace Client_Testing
                 {
                     var gVM = new GroupViewModel(g);
                     gVM.RequestTests += SendTestsRequest;
+                    gVM.ExamStart_RoutedToMainModel += ExamStart;
                     Groups.Add(gVM);
                 }
 
@@ -44,7 +47,7 @@ namespace Client_Testing
             {
                 if (tests.Count() != 0)
                 {
-                    var ForWhatGroup = tests.First().Id;
+                    var ForWhatGroup = tests.First().Groups.First().Id;
                     var group = Groups.First(g => g.Id == ForWhatGroup);
                     if (group != null)
                     {
@@ -67,6 +70,18 @@ namespace Client_Testing
             }
         }
 
+        public void ExamStart(Test test, Group group)
+        {
+            TestingWindow tW = new TestingWindow();
+            TestingViewModel tVM = new TestingViewModel(test, Login, group);
+            tVM.CloseView += tW.Close;
+            tW.DataContext = tVM;
+            if (tW.ShowDialog() == true)
+            {
+                Wrapper.SendTestResult(tVM.Result);
+            }
+        }
+
         private void ExecGroupRefresh(object obj)
         {
             // var val = Groups.Count;
@@ -75,10 +90,8 @@ namespace Client_Testing
         public void SendTestsRequest(int index)
         {
             Wrapper.SendTestsRequest(index);
-           
-        }
 
-        
+        }
     }
     public delegate void RequestSend(int index);
 }

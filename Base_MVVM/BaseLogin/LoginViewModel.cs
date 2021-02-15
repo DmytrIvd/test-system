@@ -12,7 +12,7 @@ using TestLibrary;
 namespace Server_Designer.ViewModel
 {
     public delegate void LoginTry(User user);
-    public delegate void LoginAnswer(bool answerFromServer);
+    public delegate void LoginAnswer(int answerFromServer);
     public class LoginViewModel : ViewModelBase
     {
         bool Mode;
@@ -71,12 +71,13 @@ namespace Server_Designer.ViewModel
 
         }
 
-        public void LoginCallBack(bool answer)
+        public void LoginCallBack(int answer)
         {
            
-                if (answer)
+                if (answer!=0)
                 {
-                    CloseForm?.Invoke(answer,EventArgs.Empty);
+                    User.Id = answer;
+                    CloseForm?.Invoke(true, EventArgs.Empty);
                     return;
                 }
             

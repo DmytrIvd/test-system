@@ -35,7 +35,7 @@ namespace Server_Designer
         public event SendResult ResultSend;
         #endregion
         #region Senders
-        public void SendLoginAnswer(bool answer, TcpClient Towhere)
+        public void SendLoginAnswer(int answer, TcpClient Towhere)
         {
             server.SendData(answer.Serialize(), MessageType.ServerLoginVerify, Towhere);
         }

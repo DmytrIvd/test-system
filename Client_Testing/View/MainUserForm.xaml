@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client_Testing.View"
         mc:Ignorable="d"
-        Title="MainUserForm" Height="450" Width="800">
+        Title="{Binding User.Login}" Height="450" Width="800">
     <Window.Resources>
         <Style x:Key="ExpandCollapseToggleStyle"
           TargetType="{x:Type ToggleButton}">
@@ -143,15 +143,19 @@
         </Style>
         <DataTemplate x:Name="TestDataTemplate" x:Key="TestDataTemplate">
             <StackPanel Orientation="Horizontal">
+                <Label>Test title:</Label>
                 <TextBlock Text="{Binding Title}"  VerticalAlignment="Center" Margin="5"/>
+                <Label>Author:</Label>
                 <TextBlock Text="{Binding Author}" VerticalAlignment="Center" Margin="5"/>
+                <Label>Time for passing:</Label>
                 <TextBlock Text="{Binding Time}" VerticalAlignment="Center" Margin="5"/>
-
+                <Button Command="{Binding StartTest}" CommandParameter="{Binding}">Start testing</Button>
             </StackPanel>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="GroupDataTemplate"  ItemsSource="{Binding Tests}" 
                                   ItemTemplate="{StaticResource ResourceKey=TestDataTemplate}">
             <StackPanel Orientation="Horizontal">
+                <Label>Group Name:</Label>
                 <TextBlock Text="{Binding Name}"
                                 VerticalAlignment="Center" Margin="5" />
             </StackPanel>
@@ -174,7 +178,7 @@
                 <TreeView ItemsSource="{Binding Groups}" 
                           ItemContainerStyle="{StaticResource TreeViewItemStyle}" 
                           ItemTemplate="{StaticResource ResourceKey=GroupDataTemplate}">
-                   
+
                 </TreeView>
             </Grid>
         </TabItem>

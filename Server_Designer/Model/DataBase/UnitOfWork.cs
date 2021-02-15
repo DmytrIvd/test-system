@@ -6,7 +6,7 @@ using TestLibrary;
 
 namespace Server_Designer.Model
 {
-    public delegate void LoginAnswerForClient(bool answer, TcpClient forWho);
+    public delegate void LoginAnswerForClient(int answer, TcpClient forWho);
     public class UnitOfWork : IDisposable
     {
         // public
@@ -40,13 +40,19 @@ namespace Server_Designer.Model
 
         public void Login(User user)
         {
-                     // var users= Users.Get(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
-          //  var users = Users.GetWithInclude();
+            // var users= Users.Get(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
+            //  var users = Users.GetWithInclude();
 
             VerifyLogin?.Invoke(AnyUser(user));
         }
-        private bool AnyUser(User user){
-            return  examContext.Users.Any(u => u.IsAdmin == user.IsAdmin && u.Login == user.Login && u.Password == user.Password);
+        private int AnyUser(User user)
+        {
+            var val = examContext.Users.First(u => u.Login == user.Login && u.Password == user.Password && u.IsAdmin == user.IsAdmin);
+            if (val == null)
+            {
+                return 0;
+            }
+            return val.Id;
 
         }
         public void LoginClient(User user, TcpClient tcpClient)
@@ -54,10 +60,9 @@ namespace Server_Designer.Model
 
             VerifyClientLogin?.Invoke(AnyUser(user), tcpClient);
         }
-        /// <summary>
-        /// Very delicate method
-        /// </summary>
-       
+
+
+
         public EFGenericRepository<Group> Groups
         {
             get

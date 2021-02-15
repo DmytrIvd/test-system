@@ -22,17 +22,17 @@ namespace Server_Designer.Model
 
 
 
-            modelBuilder.Entity<Group>().Property(g => g.Name).HasMaxLength(15).HasColumnType("varchar").IsRequired();
+            modelBuilder.Entity<Group>().Property(g => g.Name).HasMaxLength(40).HasColumnType("nvarchar").IsRequired();
 
-            modelBuilder.Entity<Test>().Property(t => t.Author).HasMaxLength(30).IsRequired();
-            modelBuilder.Entity<Test>().Property(t => t.Title).HasMaxLength(30).HasColumnType("varchar").IsRequired();
+            modelBuilder.Entity<Test>().Property(t => t.Author).HasMaxLength(40).IsRequired();
+            modelBuilder.Entity<Test>().Property(t => t.Title).HasMaxLength(40).HasColumnType("nvarchar").IsRequired();
 
-            modelBuilder.Entity<User>().Property(u => u.Login).HasMaxLength(20).HasColumnType("varchar").IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.Password).HasMaxLength(20).HasColumnType("varchar").IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.Login).HasMaxLength(20).HasColumnType("nvarchar").IsRequired();
+            modelBuilder.Entity<User>().Property(u => u.Password).HasMaxLength(20).HasColumnType("nvarchar").IsRequired();
 
-            modelBuilder.Entity<Variant>().Property(v => v.Variant_str).HasMaxLength(30).IsRequired();
+            modelBuilder.Entity<Variant>().Property(v => v.Variant_str).HasMaxLength(50).IsRequired();
 
-            modelBuilder.Entity<Question>().Property(q => q.Question_str).HasMaxLength(30).IsRequired();
+            modelBuilder.Entity<Question>().Property(q => q.Question_str).HasMaxLength(50).IsRequired();
 
             base.OnModelCreating(modelBuilder);
         }
