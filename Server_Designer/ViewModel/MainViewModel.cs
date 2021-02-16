@@ -54,6 +54,8 @@ namespace Server_Designer.ViewModel
             _children.Add(new GroupUsersViewModel(unitOfWork.Users, unitOfWork.Groups, unitOfWork.Tests));
             //Tests-Groups-Questions-Variants redactor
             _children.Add(new TestUsersViewModel(unitOfWork.Tests, unitOfWork.Groups, unitOfWork.Questions, unitOfWork.Variants));
+            //Results see
+            _children.Add(new ResultsViewModel(unitOfWork.Results,unitOfWork.Tests,unitOfWork.Groups,unitOfWork.Users));
             Subscribe();
 
         }
@@ -83,7 +85,8 @@ namespace Server_Designer.ViewModel
                                       Id = q.Id,Question_str =q.Question_str,Dificulty = q.Dificulty,
                         
                                         Variants=q.Variants.Select(v=>
-                                                new Variant {Id=v.Id,IsRight=v.IsRight,Variant_str=v.Variant_str 
+                                                new Variant {
+                                                    Id=v.Id,IsRight=v.IsRight,Variant_str=v.Variant_str 
                                           }).ToList(),
                                      }).ToList(),
                          })

@@ -42,7 +42,10 @@ namespace Client_Testing
             Client.GotTests += groupTestsViewModel.LoadTests;
 
         }
-
+        public void OnViewClosing(object sender, EventArgs e)
+        {
+            Dispose();
+        }
         protected override void OnDispose()
         {
             Client.Dispose();

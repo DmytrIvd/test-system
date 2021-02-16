@@ -20,7 +20,7 @@ namespace Client_Testing
             Login = login;
             Wrapper = clientWrapper;
             Groups = new ObservableCollection<GroupViewModel>();
-
+            ExecGroupRefresh(null);
         }
 
         public void RefreshGroups(Group[] groups)
@@ -79,6 +79,7 @@ namespace Client_Testing
             if (tW.ShowDialog() == true)
             {
                 Wrapper.SendTestResult(tVM.Result);
+                ExecGroupRefresh(null);
             }
         }
 

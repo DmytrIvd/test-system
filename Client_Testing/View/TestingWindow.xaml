@@ -40,13 +40,13 @@
             <RowDefinition Height="44*"/>
         </Grid.RowDefinitions>
         <!--#region Navigation -->
-        <Button Style="{StaticResource ArrowButtons}" Command="{Binding Previous}" IsEnabled="False" Content="3"/>
+        <Button Style="{StaticResource ArrowButtons}" Command="{Binding Previous}"  Content="3"/>
         <Button  Style="{StaticResource ArrowButtons}" Command="{Binding Next}" Content="4" Grid.Column="4"/>
 
         <TextBox Grid.Column="2"  TextWrapping="Wrap" Text="{Binding Timer}" ToolTip="Time to exam end" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="18"/>
 
         <TextBox Grid.Column="1" Text="{Binding AnsweredCount}" IsEnabled="False" Style="{StaticResource TextBoxes}" Margin="40,0"/>
-        <TextBox Grid.Column="3" Text="{Binding AllCount}" IsEnabled="False" Style="{StaticResource TextBoxes}" Margin="40,0" ToolTip="Count of unaswered question" />
+        <TextBox Grid.Column="3" Text="{Binding AllCount,Mode=OneWay}" IsEnabled="False" Style="{StaticResource TextBoxes}" Margin="40,0" ToolTip="Count of unaswered question" />
 
         <!--#endregion-->
 
@@ -56,14 +56,14 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Viewbox Height="35">
-                        <RadioButton GroupName="Answers" VerticalContentAlignment="Center" Content="{Binding Variant}"/>
+                        <RadioButton GroupName="Answers" IsChecked="{Binding IsSelected}" VerticalContentAlignment="Center" Content="{Binding Variant}"/>
                     </Viewbox>
                 </DataTemplate>
             </ListBox.ItemTemplate>
 
         </ListBox>
         
-        <TextBox ToolTip="Dificulty of question:" IsReadOnly="True" Style="{StaticResource TextBoxes}" Grid.Row="1" Margin="10,26.6,9.8,10.2" />
+        <TextBox ToolTip="Dificulty of question:" Text="{Binding Difficulty}" IsReadOnly="True" Style="{StaticResource TextBoxes}" Grid.Row="1" Margin="10,26.6,9.8,10.2" />
         <TextBox IsReadOnly="True" Grid.Column="2" Margin="10,20,30,10"   Grid.Row="1" Style="{StaticResource TextBoxes}" TextWrapping="Wrap" Text="{Binding Question}" Grid.ColumnSpan="3"/>
         <Label  Content="Question:" Grid.Column="1" Style="{StaticResource TextBoxes}"  Grid.Row="1" />
 

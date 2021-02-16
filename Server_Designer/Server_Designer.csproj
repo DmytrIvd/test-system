@@ -104,6 +104,7 @@
     <Compile Include="ViewModel\EntityViewModel.cs" />
     <Compile Include="ViewModel\GroupUsersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ResultsViewModel.cs" />
     <Compile Include="ViewModel\TestUsersViewModel.cs" />
     <Compile Include="ViewModel\UsersViewModel.cs" />
     <Compile Include="View\LoginForm.xaml.cs">

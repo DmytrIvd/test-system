@@ -58,6 +58,7 @@ namespace Client_Testing
                         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                         Current.MainWindow = mainUserForm;
                         mainUserForm.Show();
+                        mainUserForm.Closed +=mainUserViewModel.OnViewClosing; 
                         return;
                     }
 
@@ -75,7 +76,7 @@ namespace Client_Testing
             Current.Shutdown(-1);
         }
 
-
+       
     }
 
 }

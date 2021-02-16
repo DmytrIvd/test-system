@@ -85,7 +85,7 @@ namespace Client_Testing.ViewModel
         #region Command handlers
         private bool CanExecPrevious(object arg)
         {
-            return Index == 0;
+            return Index != 0;
         }
 
         private void ExecPrevious(object obj)
@@ -95,7 +95,7 @@ namespace Client_Testing.ViewModel
 
         private bool CanExecNext(object arg)
         {
-            return Index <= Questions.Count - 1;
+            return Index < Questions.Count - 1;
         }
 
         private void ExecNext(object obj)
@@ -105,15 +105,18 @@ namespace Client_Testing.ViewModel
 
         private void ExecEndExam(object obj)
         {
-            if (AllCount != AnsweredCount)
+            ChangeAnswered();
+            if (Questions.Count != AnsweredCount)
             {
                 MessageBox.Show("Are you sure you answer all questions? You have skipped some, please answer to they first");
-                var question = Questions.First(q => q.AnswerViewModels.First(a => a.IsSelected) != null);
+
+                var question = Questions.First(q => q.AnswerViewModels.All(a => a.IsSelected == false));
                 if (question != null)
                 {
                     Index = Questions.IndexOf(question);
                     return;
                 }
+
             }
             ResumeExam();
 
@@ -121,22 +124,30 @@ namespace Client_Testing.ViewModel
         #endregion
 
         #region Test passing properties
-        public ObservableCollection<QuestionViewModel> Questions = new ObservableCollection<QuestionViewModel>();
-
+        public ObservableCollection<QuestionViewModel> Questions { get; set; }
+        private int _answered;
         public int AnsweredCount
         {
-            get => Questions.Select(x => x.AnswerViewModels.Where(a => a.IsSelected == true)).Count();
+            get => _answered;
+            set
+            {
+                _answered = value;
+                OnPropertyChanged("AnsweredCount");
+            }
 
         }
-
         public int AllCount
         {
             get
             {
                 return Questions.Count;
             }
-
         }
+        private void ChangeAnswered()
+        {
+            AnsweredCount = Questions.Where(q=>q.AnswerViewModels.Any(a=>a.IsSelected)).Count();
+        }
+
 
         private int _index;
         public int Index
@@ -152,7 +163,8 @@ namespace Client_Testing.ViewModel
                 OnPropertyChanged("Difficulty");
                 OnPropertyChanged("Question");
                 OnPropertyChanged("Answers");
-                OnPropertyChanged("AnsweredCount");
+                ChangeAnswered();
+                //OnPropertyChanged("AnsweredCount");
             }
         }
 
@@ -169,7 +181,11 @@ namespace Client_Testing.ViewModel
             {
                 return Questions[Index].Difficulty;
             }
-
+            set
+            {
+                Questions[Index].Difficulty = value;
+                OnPropertyChanged("Difficulty");
+            }
         }
         public string Question
         {
@@ -177,8 +193,13 @@ namespace Client_Testing.ViewModel
             {
                 return Questions[Index].Question_str;
             }
-
+            set
+            {
+                Questions[Index].Question_str = value;
+                OnPropertyChanged("Question");
+            }
         }
+
         #endregion
         public TestingViewModel(Test test, User user, Group group)
         {
@@ -205,6 +226,7 @@ namespace Client_Testing.ViewModel
                   var result = StartedTime + ExamTimer.Interval - DateTime.Now;
                   Timer = string.Format("{0:00}:{1:00}:{2:00}", result.Hours, result.Minutes, result.Seconds);
               };
+            _refreshTimer.Start();
             #endregion
             Questions = new ObservableCollection<QuestionViewModel>();
             foreach (var q in test.Questions)
@@ -220,10 +242,20 @@ namespace Client_Testing.ViewModel
             Result.Group = group;
             Result.Sender = sender;
             Result.Task = test;
-            Result.PercentageOfRightAnswers = (double)(Questions.Select(q=>q.IsRight).Count()*100)/(double)Questions.Select(q => q.Difficulty).Sum();
+            double rightAnswers = Questions.Select(q => (q.IsRight ? 1 : 0) * q.Difficulty).Sum();
+            double MaxGrades = Questions.Select(q => q.Difficulty).Sum();
+            Result.PercentageOfRightAnswers = rightAnswers * 100 / MaxGrades;
             MessageBox.Show("Your result is:" + Result.PercentageOfRightAnswers);
             CloseView.Invoke();
-         }
+            Dispose();
+        }
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+            _refreshTimer.Stop();
+            ExamTimer.Stop();
+
+        }
         #region Event handlers
         private void RealTimer_Tick(object sender, EventArgs e)
         {

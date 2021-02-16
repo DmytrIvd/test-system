@@ -201,18 +201,29 @@
             </Grid>
         </TabItem>
 
-        <TabItem Header="Statistics">
+        <TabItem DataContext="{Binding Children[3]}" Header="Statistics">
 
             <Grid Background="#FFE5E5E5">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="177*"/>
-                    <RowDefinition Height="238*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+                <ListBox  Margin="0" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Content="Refresh" Command="{Binding Refresh}"  Grid.Row="1" />
+
+
 
             </Grid>
         </TabItem>

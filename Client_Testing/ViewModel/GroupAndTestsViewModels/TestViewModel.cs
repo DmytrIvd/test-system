@@ -29,7 +29,7 @@ namespace Client_Testing
 
         private void ExecStartTest(object obj)
         {
-            ExamStarter?.Invoke((Test)obj);
+            ExamStarter?.Invoke(((TestViewModel)obj).Test);
         }
 
         public Test Test { get; private set; }
