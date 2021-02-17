@@ -88,6 +88,15 @@ namespace Networking
             thread.Start();
             started = true;
         }
+        public void StartOn(string ip){
+            listener = new TcpListener(IPAddress.Parse(ip), port);
+            Console.WriteLine("Started server on port " + port);
+
+            Thread thread = new Thread(new ThreadStart(ListenForClients));
+            // thread.IsBackground = true;
+            thread.Start();
+            started = true;
+        }
 
         /// <summary>
         /// Runs in its own thread. Responsible for accepting new clients and kicking them off into their own thread
