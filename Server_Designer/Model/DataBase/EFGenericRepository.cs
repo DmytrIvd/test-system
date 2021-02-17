@@ -42,7 +42,7 @@ namespace Server_Designer.Model
 
         public void Create(TEntity item)
         {
-            _dbSet.Add(item);
+             _dbSet.Add(item);
             //_context.SaveChanges();
         }
         public void Update(TEntity item)
@@ -77,8 +77,15 @@ namespace Server_Designer.Model
         {
             //_dbSet.Remove(item);
             //_context.SaveChanges();
-            _dbSet.Attach(item);
-            _context.Entry(item).State = EntityState.Deleted;
+            try
+            {
+                _dbSet.Attach(item);
+            }
+            catch(Exception){
+
+            }
+            
+           _context.Entry(item).State = EntityState.Deleted;
             // _context.SaveChanges();
         }
 
