@@ -136,9 +136,9 @@ namespace Server_Designer.ViewModel
                 usersRepo.Remove(obj as User);
                 SaveAll();
             }
-            catch (Exception)
+            catch (Exception exe)
             {
-                MessageBox.Show("Cannot delete this user, first of delete him from the groups and delete his results");
+                MessageBox.Show(exe.Message);
             }
             RefreshExec(null);
         }

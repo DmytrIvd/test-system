@@ -20,6 +20,9 @@ namespace Client_Testing
                 ClientWrapper ClientWrapper = new ClientWrapper();
                 //Your server host ip goes here||
                 //                             \-/
+                //Введеіть сюди айпі свого сервера
+                //Логін 1/Пароль 1 адміна  
+                //Юзера Логін 2  Пароль 2
                 ClientWrapper.Start("192.168.0.103", 8888);
 
 
