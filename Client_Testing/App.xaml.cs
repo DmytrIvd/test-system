@@ -16,7 +16,7 @@ namespace Client_Testing
             try
             {
                 Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-                Thread.Sleep(20000);
+                //Thread.Sleep(20000);
                 ClientWrapper ClientWrapper = new ClientWrapper();
                 //Your server host ip goes here||
                 //                             \-/
