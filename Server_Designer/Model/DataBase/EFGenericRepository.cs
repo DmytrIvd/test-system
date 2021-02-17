@@ -80,12 +80,13 @@ namespace Server_Designer.Model
             try
             {
                 _dbSet.Attach(item);
+                _context.Entry(item).State = EntityState.Deleted;
             }
             catch(Exception){
 
             }
             
-           _context.Entry(item).State = EntityState.Deleted;
+          
             // _context.SaveChanges();
         }
 

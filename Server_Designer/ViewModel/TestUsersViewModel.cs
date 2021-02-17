@@ -182,7 +182,7 @@ namespace Server_Designer.ViewModel
         #endregion
         protected override void SaveChangesExec(object obj)
         {
-            throw new NotImplementedException();
+
         }
 
         protected override bool CanDeleteExec(object obj)
@@ -199,21 +199,28 @@ namespace Server_Designer.ViewModel
 
         protected override void DeleteExec(object obj)
         {
-            var Test = obj as Test;
-
-            while (Test.Questions.Count != 0)
+            try
             {
-                var q = Test.Questions.First();
-                while (q.Variants.Count != 0)
-                {
-                    var v = q.Variants.First();
-                    VariantRepo.Remove(v);
+                var Test = obj as Test;
 
+                while (Test.Questions.Count != 0)
+                {
+                    var q = Test.Questions.First();
+                    while (q.Variants.Count != 0)
+                    {
+                        var v = q.Variants.First();
+                        VariantRepo.Remove(v);
+
+                    }
+                    QuestionsRepo.Remove(q);
                 }
-                QuestionsRepo.Remove(q);
+                TestsRepo.Remove(Test);
+                SaveAll();
             }
-            TestsRepo.Remove(Test);
-            SaveAll();
+            catch (Exception exe)
+            {
+                MessageBox.Show(exe.Message);
+            }
             RefreshExec(null);
         }
 
