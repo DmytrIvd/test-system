@@ -8,17 +8,20 @@ using System.Xml.Serialization;
 namespace TestLibrary
 {
     [Serializable]
-    public class Question
+    public class Question:IEntity
     {
         public Question()
         {
+            Variants = new List<Variant>();
         }
-
+        [XmlIgnore]
+        public int Id{ get; set; }
         [XmlElement("Text")]
         public string Question_str { get; set; }
         public List<Variant> Variants { get; set; }
-        public int Dificulty{ get; set; }
-
+        public int Dificulty { get; set; }
+        [XmlIgnore]
+        public Test Test { get; set; }
         public override bool Equals(object obj)
         {
             return obj is Question question &&
@@ -38,7 +41,7 @@ namespace TestLibrary
 
         public override string ToString()
         {
-            return "Name:"+Question_str+"|Dificulty:"+Dificulty+"|Count of variants:"+Variants.Count;
+            return "Name:" + Question_str + "|Dificulty:" + Dificulty + "|Count of variants:" + Variants.Count;
         }
     }
 }

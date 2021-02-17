@@ -26,7 +26,7 @@ namespace TestDesigner
     {
         public MainWindow()
         {
-            InitializeComponent();
+                InitializeComponent();
 
             openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "XML Files (*.xml)|*.xml";

@@ -5,15 +5,19 @@ using System.Xml.Serialization;
 namespace TestLibrary
 {
     [Serializable]
-    public class Variant
+    public class Variant : IEntity
     {
         public Variant()
         {
-        }
 
+        }
+        [XmlIgnore]
+        public int Id { get; set; }
         [XmlElement("Text")]
         public string Variant_str { get; set; }
         public bool IsRight { get; set; }
+        [XmlIgnore]
+        public Question Question { get; set; }
 
         public override bool Equals(object obj)
         {
