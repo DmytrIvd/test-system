@@ -1,5 +1,4 @@
 ﻿using Base_MVVM;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using TestLibrary;
@@ -35,7 +34,7 @@ namespace Client_Testing
         }
         public void RouteToMainModel(Test test)
         {
-            ExamStart_RoutedToMainModel?.Invoke(test,Group);
+            ExamStart_RoutedToMainModel?.Invoke(test, Group);
         }
         public bool IsExpanded
         {

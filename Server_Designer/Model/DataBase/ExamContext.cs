@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using TestLibrary;
 
 namespace Server_Designer.Model
@@ -34,6 +29,11 @@ namespace Server_Designer.Model
 
             modelBuilder.Entity<Question>().Property(q => q.Question_str).HasMaxLength(50).IsRequired();
 
+            modelBuilder.Entity<Result>().HasRequired<Group>(r => r.Group).WithMany(g => g.Results).HasForeignKey<int>(r => r.GroupId);
+            modelBuilder.Entity<Result>().HasRequired<User>(r => r.Sender).WithMany(u => u.Results).HasForeignKey<int>(r => r.SenderId);
+            modelBuilder.Entity<Result>().HasRequired<Test>(r => r.Task).WithMany(t => t.Results).HasForeignKey<int>(r => r.TaskId);
+
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -45,5 +45,6 @@ namespace Server_Designer.Model
         public DbSet<Question> Questions { get; set; }
         public DbSet<Variant> Variants { get; set; }
 
+        public DbSet<Result> Results { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿using TestLibrary;
-using Base_MVVM;
+﻿using Base_MVVM;
+using TestLibrary;
 
 namespace Client_Testing.ViewModel
 {
@@ -9,7 +9,7 @@ namespace Client_Testing.ViewModel
         {
             _variant = variant;
         }
-       internal Variant _variant;
+        internal Variant _variant;
         private bool isSelected;
         public bool IsSelected
         {

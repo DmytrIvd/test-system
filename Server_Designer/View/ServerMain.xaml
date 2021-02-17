@@ -168,19 +168,19 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <GroupBox Header="Test" Margin="223,0,-0.2,0" Grid.ColumnSpan="3">
+                <GroupBox Header="Test" Grid.ColumnSpan="2" Grid.Column="1">
                     <Grid>
                         <Button Command="{Binding Save}" Content="Save" Margin="0,0,-0.2,4.6" Height="19" VerticalAlignment="Bottom"/>
-                        <Button Content="Select test" Command="{Binding SelectTest}" HorizontalAlignment="Left" Margin="203,14,0,0" VerticalAlignment="Top" Width="265"/>
+                        <Button Content="Select test" Command="{Binding SelectTest}" Margin="0,14,25.6,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="265"/>
                         <TextBox HorizontalAlignment="Left" Height="23" Margin="10,14,0,0" TextWrapping="Wrap" Text="{Binding Address}" VerticalAlignment="Top" Width="178"/>
                     </Grid>
                 </GroupBox>
-                <Button  Margin="0,270,-0.2,0.4" Command="{Binding Refresh}" BorderBrush="Black" BorderThickness="2" Content="Refresh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+                <Button  Margin="0" Command="{Binding Refresh}" BorderBrush="Black" BorderThickness="2" Content="Refresh" Grid.Row="2" Grid.ColumnSpan="3"/>
                 <GroupBox Header="Add relationship" Margin="0,0,5.2,4">
                     <Grid>
                         <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding Test.Title}" Width="71" Height="21" VerticalAlignment="Top" IsReadOnly="True"/>
                         <TextBox Margin="0,0,9.2,0" TextWrapping="Wrap" Text="{Binding Group.Name}" HorizontalAlignment="Right" Width="72" Height="21" VerticalAlignment="Top" IsReadOnly="True"/>
-                        <Button Content="Add relationship" Command="{Binding AddRelationship}" Margin="0,0,-0.2,26.4" Height="20" VerticalAlignment="Bottom"/>
+                        <Button Content="Add relationship" Command="{Binding AddRelationship}" Margin="0,39,-0.6,0" Height="20" VerticalAlignment="Top"/>
                         <Button Content="Drop relationship" Command="{Binding DropRelationship}" Margin="0,0,-0.2,0.4" Height="21" VerticalAlignment="Bottom"/>
 
                     </Grid>
@@ -200,7 +200,6 @@
 
             </Grid>
         </TabItem>
-
         <TabItem DataContext="{Binding Children[3]}" Header="Statistics">
 
             <Grid Background="#FFE5E5E5">
@@ -210,18 +209,51 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="208*"/>
+                    <ColumnDefinition Width="325*"/>
+                    <ColumnDefinition Width="196*"/>
                 </Grid.ColumnDefinitions>
-                <ListBox  Margin="0" >
+                <ListBox ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible"  Margin="10,0" ItemsSource="{Binding Results}" Grid.Column="1">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock></TextBlock>
+                                <Label>Test name:</Label>
+                                <TextBlock Text="{Binding TestTitle}"/>
+                                <Label>Group name:</Label>
+                                <TextBlock Text="{Binding GroupName}"/>
+                                <Label>Sender name:</Label>
+                                <TextBlock Text="{Binding SenderName}"/>
+                                <Label>Date of pass:</Label>
+                                <TextBlock Text="{Binding DateOfPass}"/>
+                                <Label>Grade:</Label>
+                                <TextBlock Text="{Binding Grade}"/>
+                                <Button Command="{Binding DataContext.Delete,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">Delete</Button>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Content="Refresh" Command="{Binding Refresh}"  Grid.Row="1" />
+                <Button Content="Refresh" Command="{Binding Refresh}"  Grid.Row="1" Grid.ColumnSpan="3"  />
+                <ListBox SelectionMode="Single" SelectedValue="{Binding SelectedGroup}" ItemsSource="{Binding Groups}" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label>Group Name:</Label>
+                                <TextBox IsReadOnly="True" Text="{Binding Name}"/>
+                                <Button Command="{Binding DataContext.Filter,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">Filter by this group</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox  ItemsSource="{Binding Users}" SelectionMode="Single" SelectedValue="{Binding SelectedUser}" Grid.Column="2" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox IsReadOnly="True" Text="{Binding Login}"/>
+                                <Button Command="{Binding DataContext.Filter,RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding}">Filter by this user</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
 
 

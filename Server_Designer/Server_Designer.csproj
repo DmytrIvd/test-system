@@ -100,7 +100,6 @@
     <Compile Include="Model\DataBase\IRepository.cs" />
     <Compile Include="Model\DataBase\UnitOfWork.cs" />
     <Compile Include="Model\ServerWrapper.cs" />
-    <Compile Include="Starter.cs" />
     <Compile Include="ViewModel\EntityViewModel.cs" />
     <Compile Include="ViewModel\GroupUsersViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

@@ -1,7 +1,7 @@
-﻿using TestLibrary;
-using Base_MVVM;
+﻿using Base_MVVM;
 using System.Collections.ObjectModel;
 using System.Linq;
+using TestLibrary;
 namespace Client_Testing.ViewModel
 {
     public class QuestionViewModel : ViewModelBase
@@ -20,7 +20,7 @@ namespace Client_Testing.ViewModel
         {
             get
             {
-                return AnswerViewModels.Any(a => a._variant.IsRight&&a.IsSelected);
+                return AnswerViewModels.Any(a => a._variant.IsRight && a.IsSelected);
             }
         }
         public int Difficulty

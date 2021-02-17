@@ -90,7 +90,7 @@ namespace Client_Testing
             // messageType = null;
         }
 
-        
+
         #endregion
         #region Cleaners
         public void Dispose()

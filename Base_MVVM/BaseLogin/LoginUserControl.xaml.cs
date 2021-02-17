@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Base_MVVM.BaseLogin
 {
@@ -46,13 +35,13 @@ namespace Base_MVVM.BaseLogin
 
         private static void PropertyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-           LoginUserControl userControl = ((LoginUserControl)dependencyObject);
+            LoginUserControl userControl = ((LoginUserControl)dependencyObject);
             userControl.logintxtbox.Text = (string)args.NewValue;
         }
         public static readonly DependencyProperty LoginCommandProperty =
         DependencyProperty.Register(
-        "LoginCommand", 
-        typeof(ICommand), 
+        "LoginCommand",
+        typeof(ICommand),
         typeof(LoginUserControl)
         );
 
@@ -87,7 +76,8 @@ namespace Base_MVVM.BaseLogin
             }
         }
         public event RoutedEventHandler CancelClick;
-        void onButtonClick(object sender, RoutedEventArgs e){
+        void onButtonClick(object sender, RoutedEventArgs e)
+        {
             this.CancelClick?.Invoke(this, e);
         }
     }

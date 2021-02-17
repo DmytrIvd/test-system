@@ -1,11 +1,8 @@
-﻿using Networking;
-using Server_Designer.Model;
+﻿using Server_Designer.Model;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using TestLibrary;
 
@@ -55,14 +52,21 @@ namespace Server_Designer.ViewModel
             //Tests-Groups-Questions-Variants redactor
             _children.Add(new TestUsersViewModel(unitOfWork.Tests, unitOfWork.Groups, unitOfWork.Questions, unitOfWork.Variants));
             //Results see
-            _children.Add(new ResultsViewModel(unitOfWork.Results,unitOfWork.Tests,unitOfWork.Groups,unitOfWork.Users));
+            _children.Add(new ResultsViewModel(unitOfWork.Results, unitOfWork.Users, unitOfWork.Groups, unitOfWork.Tests));
             Subscribe();
 
         }
 
         private void Server_ResultSend(Result result, System.Net.Sockets.TcpClient tcpClient)
         {
+
+
+
+
+
+
             unitOfWork.Results.Create(result);
+            unitOfWork.Save();
         }
 
         private void Server_GetTests(object entity, System.Net.Sockets.TcpClient tcpClient)
@@ -72,24 +76,34 @@ namespace Server_Designer.ViewModel
                 if (entity is int index)
                 {
                     var tests = unitOfWork.Tests.GetWithInclude(
-                    (t) => t.Groups.Exists(g=>g.Id == index), 
+                    (t) => t.Groups.Exists(g => g.Id == index),
                     (t) => t.Questions.
                     Select(q => q.Variants)).
                      Select(
-                        t=>new Test {
-                            Id = t.Id,Author = t.Author,Title = t.Title,Time = t.Time,
-                            Groups=t.Groups.Where(g=>g.Id==index).Select(g=>new Group { Id = index }).ToList(),
-                            Questions=
-                                t.Questions.Select(q=>
-                                    new Question {
-                                      Id = q.Id,Question_str =q.Question_str,Dificulty = q.Dificulty,
-                        
-                                        Variants=q.Variants.Select(v=>
-                                                new Variant {
-                                                    Id=v.Id,IsRight=v.IsRight,Variant_str=v.Variant_str 
-                                          }).ToList(),
-                                     }).ToList(),
-                         })
+                        t => new Test
+                        {
+                            Id = t.Id,
+                            Author = t.Author,
+                            Title = t.Title,
+                            Time = t.Time,
+                            Groups = t.Groups.Where(g => g.Id == index).Select(g => new Group { Id = index }).ToList(),
+                            Questions =
+                                t.Questions.Select(q =>
+                                    new Question
+                                    {
+                                        Id = q.Id,
+                                        Question_str = q.Question_str,
+                                        Dificulty = q.Dificulty,
+
+                                        Variants = q.Variants.Select(v =>
+                                                  new Variant
+                                                  {
+                                                      Id = v.Id,
+                                                      IsRight = v.IsRight,
+                                                      Variant_str = v.Variant_str
+                                                  }).ToList(),
+                                    }).ToList(),
+                        })
                     .ToArray();
                     //var tests = unitOfWork.Tests.Get(t => t.Groups.Exists(g => g.Id == index)).Select(t => new Test { Id = t.Id, Time = t.Time, Title = t.Title, Author = t.Author });
                     //foreach (var t in tests)

@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 namespace TestLibrary
 {
     [Serializable]
-    public class Test:IEntity
+    public class Test : IEntity
     {
         public Test()
         {
@@ -15,13 +15,14 @@ namespace TestLibrary
 
         [XmlIgnore]
         public int Id { get; set; }
-      
-        public string Title{ get; set; }
+
+        public string Title { get; set; }
         [XmlIgnore]
         public TimeSpan Time { get; set; }
         public string Author { get; set; }
-       //Groups to which this test was indended
-        public virtual List<Group> Groups{ get; set; }
-        public virtual List<Question> Questions{ get; set; }
+        //Groups to which this test was indended
+        public virtual List<Group> Groups { get; set; }
+        public virtual List<Question> Questions { get; set; }
+        public virtual List<Result> Results { get; set; }
     }
-   }
+}

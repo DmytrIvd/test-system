@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Base_MVVM;
+using System;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TestLibrary;
-using Base_MVVM;
-using System.Collections.ObjectModel;
 
 namespace Client_Testing.ViewModel
 {
@@ -145,7 +142,7 @@ namespace Client_Testing.ViewModel
         }
         private void ChangeAnswered()
         {
-            AnsweredCount = Questions.Where(q=>q.AnswerViewModels.Any(a=>a.IsSelected)).Count();
+            AnsweredCount = Questions.Where(q => q.AnswerViewModels.Any(a => a.IsSelected)).Count();
         }
 
 
@@ -204,6 +201,7 @@ namespace Client_Testing.ViewModel
         public TestingViewModel(Test test, User user, Group group)
         {
             Result = new Result();
+            //test.Groups.Clear();
             this.group = group;
             this.sender = user;
             this.test = test;
@@ -235,25 +233,26 @@ namespace Client_Testing.ViewModel
             }
         }
 
-        public event CloseSomething CloseView;
+        public event CloseView CloseView;
         private void ResumeExam()
         {
             Result.dateOfPassing = DateTime.Now;
-            Result.Group = group;
-            Result.Sender = sender;
-            Result.Task = test;
+            Result.GroupId = group.Id;
+            Result.SenderId = sender.Id;
+            Result.TaskId = test.Id;
             double rightAnswers = Questions.Select(q => (q.IsRight ? 1 : 0) * q.Difficulty).Sum();
             double MaxGrades = Questions.Select(q => q.Difficulty).Sum();
             Result.PercentageOfRightAnswers = rightAnswers * 100 / MaxGrades;
             MessageBox.Show("Your result is:" + Result.PercentageOfRightAnswers);
-            CloseView.Invoke();
+            CloseView.Invoke(true);
             Dispose();
         }
         protected override void OnDispose()
         {
-            base.OnDispose();
             _refreshTimer.Stop();
             ExamTimer.Stop();
+            base.OnDispose();
+
 
         }
         #region Event handlers
@@ -267,6 +266,6 @@ namespace Client_Testing.ViewModel
         #endregion
 
     }
-    public delegate void CloseSomething();
+    public delegate void CloseView(bool result);
 }
 

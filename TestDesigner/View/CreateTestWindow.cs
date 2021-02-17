@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace TestDesigner
 {
@@ -27,14 +16,16 @@ namespace TestDesigner
         }
         public void OnPropertyValueChanged_Refresh(object sender, PropertyChangedEventArgs e)
         {
-           if(e.PropertyName=="Value"){
+            if (e.PropertyName == "Value")
+            {
                 this.listBox1.Items.Refresh();
 
             }
         }
         private void ListBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key== Key.Escape){
+            if (e.Key == Key.Escape)
+            {
                 listBox1.UnselectAll();
             }
 
@@ -53,20 +44,24 @@ namespace TestDesigner
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-           var result= MessageBox.Show("Save changes?", "Warning", MessageBoxButton.YesNoCancel,MessageBoxImage.Warning);
-           switch(result){
-                case MessageBoxResult.Yes:{
+            var result = MessageBox.Show("Save changes?", "Warning", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    {
                         (DataContext as TestDesignerViewModel).Save.Execute(null);
                         break;
-                }
-                case MessageBoxResult.No:{
+                    }
+                case MessageBoxResult.No:
+                    {
                         break;
-                }
-                case MessageBoxResult.Cancel:{
+                    }
+                case MessageBoxResult.Cancel:
+                    {
                         e.Cancel = true;
                         break;
-                }
-           }
+                    }
+            }
         }
     }
 }

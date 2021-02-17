@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using TestLibrary;
 namespace Networking
 {
     public static class Foo
@@ -51,7 +48,7 @@ namespace Networking
         public static byte[] CombineChunks(this IEnumerable<byte[]> chunks)
         {
 
-            var totalLenght=chunks.Sum(a => a.Length);
+            var totalLenght = chunks.Sum(a => a.Length);
             var data = new byte[totalLenght];
             int offset = 0;
             foreach (var o in chunks)
@@ -82,5 +79,5 @@ namespace Networking
         }
     }
 }
-   
+
 

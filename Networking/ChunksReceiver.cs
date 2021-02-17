@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using TestLibrary;
 namespace Networking
 {
     public class ChunksReceiver
@@ -11,7 +10,7 @@ namespace Networking
         public bool ReceiveAll;
         public void ReceiveBytes(byte[] arr)
         {
-            
+
             //var obj = data.Deserialize();
             if (!GotHeader)
             {
@@ -25,10 +24,10 @@ namespace Networking
             }
             if (chunkCount != 0)
             {
-               
+
                 Chunks.Add(arr);
-                chunkCount-=arr.Length;
-                if (chunkCount==0)
+                chunkCount -= arr.Length;
+                if (chunkCount == 0)
                 {
                     ReceiveAll = true;
                     //GotFullChunks(MessageType, ReceivedChunks);

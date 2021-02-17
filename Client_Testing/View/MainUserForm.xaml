@@ -173,7 +173,7 @@
                     <RowDefinition Height="372*"/>
                     <RowDefinition Height="43*"/>
                 </Grid.RowDefinitions>
-                <Button Content="Refresh" Command="{Binding Refresh}" FontSize="16" BorderBrush="Black" BorderThickness="2" Grid.RowSpan="2"/>
+                <Button Content="Refresh" Command="{Binding Refresh}" FontSize="16" BorderBrush="Black" BorderThickness="2" Grid.Row="1"/>
                 <TreeView ItemsSource="{Binding Groups}" 
                           ItemContainerStyle="{StaticResource TreeViewItemStyle}" 
                           ItemTemplate="{StaticResource ResourceKey=GroupDataTemplate}">

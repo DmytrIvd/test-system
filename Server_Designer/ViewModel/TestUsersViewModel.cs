@@ -200,11 +200,11 @@ namespace Server_Designer.ViewModel
         protected override void DeleteExec(object obj)
         {
             var Test = obj as Test;
-            
-            while (Test.Questions.Count!=0)
+
+            while (Test.Questions.Count != 0)
             {
                 var q = Test.Questions.First();
-                while(q.Variants.Count!=0)
+                while (q.Variants.Count != 0)
                 {
                     var v = q.Variants.First();
                     VariantRepo.Remove(v);
@@ -223,7 +223,7 @@ namespace Server_Designer.ViewModel
             Tests.Clear();
             try
             {
-                var tests = TestsRepo.GetWithInclude(t=>t.Questions.Select(q=>q.Variants));
+                var tests = TestsRepo.GetWithInclude(t => t.Questions.Select(q => q.Variants));
                 foreach (var u in tests)
                 {
                     Tests.Add(u);

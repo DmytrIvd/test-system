@@ -1,11 +1,7 @@
 ﻿using Server_Designer.Model;
 using Server_Designer.View;
 using Server_Designer.ViewModel;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using System.Windows;
 using TestLibrary;
 
@@ -21,6 +17,7 @@ namespace Server_Designer
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             UnitOfWork unitOfWork = new UnitOfWork();
+
             LoginForm loginForm = new LoginForm();
 
             LoginViewModel loginViewModel = new LoginViewModel();
@@ -46,7 +43,7 @@ namespace Server_Designer
                 serverWrapper.Start(8888);
 
 
-                MainViewModel mainViewModel = new MainViewModel(unitOfWork, loginViewModel.User,serverWrapper);
+                MainViewModel mainViewModel = new MainViewModel(unitOfWork, loginViewModel.User, serverWrapper);
                 serverMain.DataContext = mainViewModel;
                 //To dispose the view model when close view
                 serverMain.Closing += mainViewModel.OnViewClosing;

@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace TestLibrary
 {
     [Serializable]
-    public class Question:IEntity
+    public class Question : IEntity
     {
         public Question()
         {
             Variants = new List<Variant>();
         }
         [XmlIgnore]
-        public int Id{ get; set; }
+        public int Id { get; set; }
         [XmlElement("Text")]
         public string Question_str { get; set; }
         public List<Variant> Variants { get; set; }

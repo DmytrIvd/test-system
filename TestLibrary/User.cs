@@ -15,5 +15,6 @@ namespace TestLibrary
         public string Password { get; set; }
         public bool IsAdmin { get; set; }
         public virtual List<Group> Groups { get; set; }
+        public virtual List<Result> Results { get; set; }
     }
 }

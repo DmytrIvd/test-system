@@ -30,7 +30,7 @@ namespace Client_Testing
             //Client.GotGroups += Client_GotGroups;
             _children = new ObservableCollection<object>();
             GroupTestsViewModel groupTestsViewModel = new GroupTestsViewModel(User, Client);
-           // groupTestsViewModel.
+            // groupTestsViewModel.
             Subscribe(groupTestsViewModel);
             _children.Add(groupTestsViewModel);
 

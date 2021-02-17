@@ -1,5 +1,4 @@
 ﻿using Base_MVVM;
-using Server_Designer.Model;
 using System;
 using System.Windows.Input;
 
@@ -43,24 +42,24 @@ namespace Server_Designer.ViewModel
             get
             {
                 if (addEditCommand == null)
-                    addEditCommand = new RelayCommand(SaveExec,CanSaveExec);
+                    addEditCommand = new RelayCommand(SaveExec, CanSaveExec);
                 return addEditCommand;
             }
         }
 
-       
+
 
         public ICommand Delete
         {
             get
             {
                 if (deleteCommand == null)
-                    deleteCommand = new RelayCommand( DeleteExec,CanDeleteExec);
+                    deleteCommand = new RelayCommand(DeleteExec, CanDeleteExec);
                 return deleteCommand;
             }
         }
 
-       
+
 
         protected void SaveAll()
         {
@@ -73,7 +72,7 @@ namespace Server_Designer.ViewModel
         protected abstract void RefreshExec(object obj);
         protected abstract void SaveChangesExec(object obj);
         protected abstract bool CanSaveExec(object arg);
-        protected abstract  bool PropertiesIsNotNull();
+        protected abstract bool PropertiesIsNotNull();
         protected abstract void ClearProperties();
         protected abstract void ChangeProperties(object obj);
         #endregion
