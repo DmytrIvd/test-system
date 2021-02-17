@@ -30,7 +30,14 @@ namespace Server_Designer.Model
         }
         public TEntity FindById(int id)
         {
-            return _dbSet.Find(id);
+            try
+            {
+                return _dbSet.AsNoTracking().First(x => x.Id == id);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public void Create(TEntity item)

@@ -1,19 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml.Serialization;
 using TestLibrary;
 
@@ -26,7 +14,7 @@ namespace TestDesigner
     {
         public MainWindow()
         {
-                InitializeComponent();
+            InitializeComponent();
 
             openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "XML Files (*.xml)|*.xml";
@@ -43,7 +31,7 @@ namespace TestDesigner
             if (test == null)
                 testDesigner = new TestDesignerViewModel();
             else
-                testDesigner = new TestDesignerViewModel(test,openFileDialog.FileName);
+                testDesigner = new TestDesignerViewModel(test, openFileDialog.FileName);
 
             CreateTestWindow createTestWindow = new CreateTestWindow();
             createTestWindow.DataContext = testDesigner;
@@ -61,7 +49,7 @@ namespace TestDesigner
             ShowTestDesigner();
         }
 
-      
+
         private Test ShowFileDialog()
         {
             if (openFileDialog.ShowDialog() == true)
@@ -71,17 +59,17 @@ namespace TestDesigner
                 try
                 {
                     using (FileStream fs = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate))
-                {
-                   
+                    {
+
                         test = (Test)xmlSerializer.Deserialize(fs);
                         return test;
                     }
-                   
+
                 }
                 catch (Exception exception)
                 {
                     MessageBox.Show("Cannot read this file! Select another one");
-                    
+
                     return ShowFileDialog();
                 }
             }
@@ -93,7 +81,7 @@ namespace TestDesigner
 
             IsEditing = true;
             Test test = ShowFileDialog();
-            if (test != null)               
+            if (test != null)
                 ShowTestDesigner(test);
 
         }

@@ -35,12 +35,12 @@ namespace Networking
 
         public void SendData(byte[] b, MessageType clientMessage)
         {
-            
+
             SendImmediate(new TcpHeader { ChunkCount = b.Length, Type = clientMessage }.Serialize());
             foreach (var ch in b.DivideToChunks(1024))
             {
                 AddToPacket(ch);
-                
+
             }
             FlushData();
             //throw new NotImplementedException();

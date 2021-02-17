@@ -1,12 +1,7 @@
 ﻿using Client_Testing.View;
-using Networking;
 using Server_Designer.ViewModel;
 using System;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Client_Testing
@@ -51,13 +46,14 @@ namespace Client_Testing
 
 
 
-                        MainUserViewModel mainUserViewModel = new MainUserViewModel(loginViewModel.User,ClientWrapper);
+                        MainUserViewModel mainUserViewModel = new MainUserViewModel(loginViewModel.User, ClientWrapper);
                         MainUserForm mainUserForm = new MainUserForm();
 
                         mainUserForm.DataContext = mainUserViewModel;
                         Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
                         Current.MainWindow = mainUserForm;
                         mainUserForm.Show();
+                        mainUserForm.Closed += mainUserViewModel.OnViewClosing;
                         return;
                     }
 
@@ -65,7 +61,7 @@ namespace Client_Testing
 
 
                 }
-                
+
             }
             catch (Exception exe)
             {

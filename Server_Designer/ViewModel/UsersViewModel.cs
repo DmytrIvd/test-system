@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Server_Designer.Model;
+﻿using Server_Designer.Model;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using TestLibrary;
 
@@ -19,9 +15,10 @@ namespace Server_Designer.ViewModel
         private string password;
         private bool isAdmin;
 
-       
+
         #region Properties changing stuff
-        protected override bool PropertiesIsNotNull(){
+        protected override bool PropertiesIsNotNull()
+        {
             return !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password);
         }
         protected override void ClearProperties()
@@ -32,16 +29,16 @@ namespace Server_Designer.ViewModel
         }
         protected override void ChangeProperties(object obj)
         {
-                
-                ClearProperties();
-                if (obj != null&&obj is User user)
-                {
-                    Id = user.Id;
-                    Login = user.Login;
-                    Password = user.Password;
-                    IsAdmin = user.IsAdmin;
-                }
-            
+
+            ClearProperties();
+            if (obj != null && obj is User user)
+            {
+                Id = user.Id;
+                Login = user.Login;
+                Password = user.Password;
+                IsAdmin = user.IsAdmin;
+            }
+
         }
         #endregion
         public User User
@@ -94,7 +91,7 @@ namespace Server_Designer.ViewModel
             Users = new ObservableCollection<User>();
             Admins = new ObservableCollection<User>();
             RefreshExec(null);
-           
+
         }
         #region Commands handlers
         protected override void RefreshExec(object obj)
@@ -134,8 +131,15 @@ namespace Server_Designer.ViewModel
 
         protected override void DeleteExec(object obj)
         {
-            usersRepo.Remove(obj as User);
-            SaveAll();
+            try
+            {
+                usersRepo.Remove(obj as User);
+                SaveAll();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot delete this user, first of delete him from the groups and delete his results");
+            }
             RefreshExec(null);
         }
 
@@ -143,12 +147,12 @@ namespace Server_Designer.ViewModel
         {
             if (PropertiesIsNotNull())
             {
-               var u= usersRepo.GetWithInclude(x => x.Login == Login && x.Password == Password&&x.IsAdmin==IsAdmin);
-                if (u .Count()==0)
+                var u = usersRepo.GetWithInclude(x => x.Login == Login && x.Password == Password && x.IsAdmin == IsAdmin);
+                if (u.Count() == 0)
                 {
                     if (Id == 0)
                     {
-                   
+
                         usersRepo.Create(new User { IsAdmin = IsAdmin, Login = Login, Password = Password });
                     }
                     else
@@ -158,7 +162,9 @@ namespace Server_Designer.ViewModel
                     }
                     SaveAll();
                     RefreshExec(null);
-                }else{
+                }
+                else
+                {
                     MessageBox.Show("This user already exists");
                 }
             }

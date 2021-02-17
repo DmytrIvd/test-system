@@ -10,6 +10,7 @@ namespace TestLibrary
         {
             Users = new List<User>();
             Tests = new List<Test>();
+
         }
 
         public int Id { get; set; }
@@ -17,6 +18,7 @@ namespace TestLibrary
         public virtual List<User> Users { get; set; }
         //intended tests
         public virtual List<Test> Tests { get; set; }
+        public virtual List<Result> Results { get; set; }
     }
 
 }

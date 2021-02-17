@@ -1,12 +1,11 @@
 ﻿using Base_MVVM;
-using System.Collections.ObjectModel;
-using System.Windows;
-using System.Linq;
-using System.Windows.Input;
-using System.Windows.Threading;
-using TestLibrary;
 using Client_Testing.View;
 using Client_Testing.ViewModel;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using TestLibrary;
 
 namespace Client_Testing
 {
@@ -20,7 +19,7 @@ namespace Client_Testing
             Login = login;
             Wrapper = clientWrapper;
             Groups = new ObservableCollection<GroupViewModel>();
-
+            ExecGroupRefresh(null);
         }
 
         public void RefreshGroups(Group[] groups)
@@ -74,12 +73,16 @@ namespace Client_Testing
         {
             TestingWindow tW = new TestingWindow();
             TestingViewModel tVM = new TestingViewModel(test, Login, group);
-            tVM.CloseView += tW.Close;
+            tVM.CloseView += tW.CloseDialog;
             tW.DataContext = tVM;
             if (tW.ShowDialog() == true)
             {
                 Wrapper.SendTestResult(tVM.Result);
+
+                // ExecGroupRefresh(null);
             }
+            tVM.Dispose();
+
         }
 
         private void ExecGroupRefresh(object obj)

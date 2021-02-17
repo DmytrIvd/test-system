@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Networking
 {
@@ -67,14 +64,15 @@ namespace Networking
         /// <param name="clientMessage"></param>
         public void SendData(byte[] b, MessageType clientMessage, TcpClient client)
         {
-          //  var list = b.DivideByChunks(800);
+            //  var list = b.DivideByChunks(800);
             SendImmediate(new TcpHeader { ChunkCount = b.Length, Type = clientMessage }.Serialize(), client);
-           var chunks= b.DivideToChunks(1024);
-           foreach(var ch in chunks){
+            var chunks = b.DivideToChunks(1024);
+            foreach (var ch in chunks)
+            {
                 AddToPacket(ch, client);
-           }
+            }
             FlushData(client);
-           // AddToPacket(b, client);
+            // AddToPacket(b, client);
             //throw new NotImplementedException();
         }
         /// <summary>
@@ -109,7 +107,7 @@ namespace Networking
                     }
                     TcpClient client = listener.AcceptTcpClient();
                     Thread clientThread = new Thread(new ParameterizedThreadStart(WorkWithClient));
-                    Console.WriteLine("New client connected"+client.Client.AddressFamily.ToString());
+                    Console.WriteLine("New client connected" + client.Client.AddressFamily.ToString());
 
                     NetworkBuffer newBuff = new NetworkBuffer();
                     newBuff.WriteBuffer = new byte[sendBufferSize];
@@ -262,8 +260,8 @@ namespace Networking
             client.GetStream().Write(clientBuffers[client].WriteBuffer, 0, clientBuffers[client].CurrentWriteByteCount);
             client.GetStream().Flush();
             clientBuffers[client].CurrentWriteByteCount = 0;
-           // var buff = clientBuffers[client].WriteBuffer;
-          //  Array.Clear(buff, 0, buff.Length);
+            // var buff = clientBuffers[client].WriteBuffer;
+            //  Array.Clear(buff, 0, buff.Length);
         }
 
         /// <summary>

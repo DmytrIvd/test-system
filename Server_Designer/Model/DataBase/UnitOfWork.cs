@@ -47,7 +47,16 @@ namespace Server_Designer.Model
         }
         private int AnyUser(User user)
         {
-            var val = examContext.Users.First(u => u.Login == user.Login && u.Password == user.Password && u.IsAdmin == user.IsAdmin);
+            User val;
+            try
+            {
+                val = examContext.Users.First(u => u.Login == user.Login && u.Password == user.Password && u.IsAdmin == user.IsAdmin);
+
+            }
+            catch (Exception)
+            {
+                val = null;
+            }
             if (val == null)
             {
                 return 0;

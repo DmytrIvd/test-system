@@ -1,9 +1,5 @@
 ﻿using Base_MVVM;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -18,7 +14,7 @@ namespace Server_Designer.ViewModel
         bool Mode;
         public event EventHandler CloseForm;
         public event LoginTry LoginTry;
-        public LoginViewModel(bool IsAdmin=true)
+        public LoginViewModel(bool IsAdmin = true)
         {
 
             Mode = IsAdmin;
@@ -61,9 +57,9 @@ namespace Server_Designer.ViewModel
         private void ExecLoginCommand(object obj)
         {
             var pb = obj as PasswordBox;
-           
-            var expression = new Func<User, bool>(u => u.Password == pb.Password && u.Login == LoginStr&&u.IsAdmin==Mode);
-            User = new User { Password = pb.Password, Login = LoginStr,IsAdmin=Mode};
+
+            var expression = new Func<User, bool>(u => u.Password == pb.Password && u.Login == LoginStr && u.IsAdmin == Mode);
+            User = new User { Password = pb.Password, Login = LoginStr, IsAdmin = Mode };
             LoginTry?.Invoke(User);
 
 
@@ -73,14 +69,14 @@ namespace Server_Designer.ViewModel
 
         public void LoginCallBack(int answer)
         {
-           
-                if (answer!=0)
-                {
-                    User.Id = answer;
-                    CloseForm?.Invoke(true, EventArgs.Empty);
-                    return;
-                }
-            
+
+            if (answer != 0)
+            {
+                User.Id = answer;
+                CloseForm?.Invoke(true, EventArgs.Empty);
+                return;
+            }
+
             MessageBox.Show("This user does not exist");
         }
 
