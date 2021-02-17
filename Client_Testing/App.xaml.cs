@@ -18,7 +18,8 @@ namespace Client_Testing
                 Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 Thread.Sleep(20000);
                 ClientWrapper ClientWrapper = new ClientWrapper();
-
+                //Your server host ip goes here||
+                //                             \-/
                 ClientWrapper.Start("192.168.0.103", 8888);
 
 

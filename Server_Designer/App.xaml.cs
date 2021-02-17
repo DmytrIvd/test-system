@@ -40,8 +40,11 @@ namespace Server_Designer
                 unitOfWork.VerifyClientLogin += serverWrapper.SendLoginAnswer;
 
                 //Start the server
-                serverWrapper.Start(8888);
+                //Starts on common ip
+                //serverWrapper.Start(8888);
 
+                
+                serverWrapper.Start(8888);
 
                 MainViewModel mainViewModel = new MainViewModel(unitOfWork, loginViewModel.User, serverWrapper);
                 serverMain.DataContext = mainViewModel;

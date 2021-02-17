@@ -46,6 +46,15 @@ namespace Server_Designer
         {
             server.SendData(tests.Serialize(), MessageType.ServerSendTest, Towhere);
         }
+
+        internal void StartOn(string ip,int port)
+        {
+            ClientsData = new Dictionary<TcpClient, ChunksReceiver>();
+            server = new Server(port);
+            server.OnDataReceived += Server_OnDataReceived;
+            //server.OnDataReceived += Client_OnDataReceived;
+            server.StartOn(ip);
+        }
         #endregion
         #region Chunks stuff
         private void Server_OnDataReceived(byte[] data, int bytesRead, System.Net.Sockets.TcpClient client)
